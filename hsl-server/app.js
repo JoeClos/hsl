@@ -29,13 +29,16 @@ app.get('/journeys', async (req, res) => {
     // const journeys = await Journeys.find().skip(skip).limit(limit);
 
 
-    const journeys = await Journeys.find().limit(1000);
+    const journeys = await Journeys.find({
+        duration: { $gt: 10 },
+        covered_distance: { $gt: 10 }
+    }).limit(5000);
 
     res.json(journeys)
 })
 
 app.get('/stations', async (req, res) => {
-    const stations = await Stations.find().limit(1000);
+    const stations = await Stations.find();
     res.json(stations)
     
 })
