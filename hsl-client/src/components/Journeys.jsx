@@ -21,13 +21,13 @@ const Journeys = () => {
   return (
     <div>
       <table>
-        <tr>
-          <th>Departure</th>
-          <th>Return</th>
-          <th>Covered disance (km)</th>
-          <th>Duration (min)</th>
-        </tr>
         <tbody>
+          <tr>
+            <th>Departure</th>
+            <th>Return</th>
+            <th>Covered distance (km)</th>
+            <th>Duration (min)</th>
+          </tr>
           {journeys.data &&
             journeys.data.map((journey) => (
               <tr key={journey._id}>
