@@ -12,5 +12,7 @@ const JourneysSchema = new mongoose.Schema({
     duration: Number
 })
 
-const JourneysModel = mongoose.model('journeys', JourneysSchema)
-module.exports = JourneysModel
+const Journeys = mongoose.model('cbdbs', JourneysSchema)
+module.exports = Journeys;
+
+

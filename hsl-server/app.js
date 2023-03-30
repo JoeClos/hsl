@@ -2,23 +2,17 @@ require('dotenv').config();
 const axios = require('axios');
 const express = require('express');
 const cors = require('cors');
-const csv = require('csv-parser');
-const fs = require('fs');
+
 const app = express();
 const mongoose = require('mongoose');
-const JourneysModel = require('./models/Journeys');
+const Journeys = require('./models/Journeys');
 
 const URL = process.env.DB_URL;
 const port = process.env.PORT || 8000;
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect(URL, { useNewUrlParser: true });
-// const db = mongoose.connection;
-// db.on('error', console.error.bind(console, 'connection error:'));
-// db.once('open', function() {
-//   console.log('Connected to MongoDB');
-// });
+mongoose.connect(URL, { useNewUrlParser: true, useUnifiedTopology: true});
 
 // Get homepage
 app.get('/', (req, res) => {
@@ -27,8 +21,15 @@ app.get('/', (req, res) => {
 
 // Fetch all journeys
 app.get('/journeys', async (req, res) => {
-    const journeys = await JourneysModel.find().limit(100);
-    // console.log("Journeys: " + journeys)
+    // Pagination
+    // const page = req.query.page || 1;
+    // const limit = req.query.limit || 10;
+    // const skip = (page - 1) * limit;
+    // const journeys = await Journeys.find().skip(skip).limit(limit);
+
+
+    const journeys = await Journeys.find().limit(1000);
+
     res.json(journeys)
 })
 
