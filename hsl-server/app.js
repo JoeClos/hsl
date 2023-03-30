@@ -1,11 +1,12 @@
 require('dotenv').config();
-const axios = require('axios');
+// const axios = require('axios');
 const express = require('express');
 const cors = require('cors');
 
 const app = express();
 const mongoose = require('mongoose');
 const Journeys = require('./models/Journeys');
+const Stations = require('./models/Stations')
 
 const URL = process.env.DB_URL;
 const port = process.env.PORT || 8000;
@@ -31,6 +32,12 @@ app.get('/journeys', async (req, res) => {
     const journeys = await Journeys.find().limit(1000);
 
     res.json(journeys)
+})
+
+app.get('/stations', async (req, res) => {
+    const stations = await Stations.find().limit(1000);
+    res.json(stations)
+    
 })
 
 app.listen(port, () => {
