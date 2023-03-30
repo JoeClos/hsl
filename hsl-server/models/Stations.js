@@ -11,7 +11,7 @@ const StationSchema = new mongoose.Schema({
     address: String,
     kaupunki: String,
     stad: String,
-    operaattor: Number,
+    operaattor: String,
     kapasiteet: Number,
     x: Number,
     y: Number
