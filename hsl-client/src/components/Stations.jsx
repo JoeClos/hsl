@@ -1,8 +1,9 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState   } from "react";
 import { api } from "../config";
+import { Link } from "react-router-dom";
 
-const Stations = () => {
+const Stations = ({station}) => {
   const [stations, setStations] = useState([]);
 
   useEffect(() => {
@@ -12,7 +13,6 @@ const Stations = () => {
       .get(getJourneys)
       .then((response) => {
         setStations(response);
-        console.log(response);
       })
       .catch((err) => {
         console.log(err);
@@ -29,6 +29,7 @@ const Stations = () => {
             <th>Operator</th>
             <th>Capacity</th>
             <th>Coordinates</th>
+            <th></th>
           </tr>
           {stations.data &&
             stations.data.map((station) => (
@@ -44,6 +45,10 @@ const Stations = () => {
                     <li>Long: {station.y}</li>
                   </ul>
                 </td>
+                <td>
+                  <Link  to={`/stations/${station._id}`}>More</Link>
+                </td>
+
               </tr>
             ))}
         </tbody>
