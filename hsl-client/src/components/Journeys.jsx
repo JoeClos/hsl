@@ -1,9 +1,21 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { api } from "../config";
+import { TablePagination } from "@mui/material";
 
 const Journeys = () => {
   const [journeys, setJourneys] = useState([]);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState(0);
+
+  const handleChangePage = (_event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
 
   useEffect(() => {
     const getJourneys = api + "/journeys";
@@ -20,6 +32,15 @@ const Journeys = () => {
 
   return (
     <div>
+        <TablePagination
+        rowsPerPageOptions={[10, 25, 50, 100]}
+        component="div"
+        count={(journeys.data || []).length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
       <table>
         <tbody>
           <tr>
@@ -29,7 +50,7 @@ const Journeys = () => {
             <th>Duration (min)</th>
           </tr>
           {journeys.data &&
-            journeys.data.map((journey) => (
+            journeys.data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((journey) => (
               <tr key={journey._id}>
                 <td>{journey.departure_station_name}</td>
                 <td>{journey.return_station_name}</td>
