@@ -29,10 +29,11 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-const Stations = ({ station }) => {
+const Stations = () => {
   const [stations, setStations] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
+  const [search, setSearch] = useState("");
 
   const handleChangePage = (_event, newPage) => {
     setPage(newPage);
@@ -58,6 +59,13 @@ const Stations = ({ station }) => {
 
   return (
     <div>
+      <input
+        placeholder="Search..."
+        type="text"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
       <TablePagination
         rowsPerPageOptions={[10, 25, 50, 100]}
         component="div"
@@ -85,6 +93,12 @@ const Stations = ({ station }) => {
               {stations.data &&
                 stations.data
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .filter((item) => {
+                    return search.toLowerCase() === ""
+                      ? item
+                      : item.nimi.toLowerCase().includes(search) ||
+                          item.osoite.toLowerCase().includes(search);
+                  })
                   .map((station) => (
                     <TableRow
                       hover
