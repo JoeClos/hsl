@@ -21,6 +21,7 @@ import ReadMoreOutlinedIcon from "@mui/icons-material/ReadMoreOutlined";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import { styled } from "@mui/material/styles";
+import Search from "./Search";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -31,9 +32,25 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 const Stations = () => {
   const [stations, setStations] = useState([]);
+
+  const [search, setSearch] = useState("");
+
+  const handleSearch = (query) => {
+    setSearch(query);
+  };
+
+  const filteredList = (stations.data || []).filter((station) =>
+    station.nimi.toLowerCase().includes(search.toLowerCase())
+  );
+  // search
+  // const [search, setSearch] = useState("");
+  // const filteredStations = (stations.data || []).filter((item) =>
+  //   item.nimi.toLowerCase().includes(search.toLowerCase())
+  // );
+
+  // pagination
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
-  const [search, setSearch] = useState("");
 
   const handleChangePage = (_event, newPage) => {
     setPage(newPage);
@@ -51,6 +68,7 @@ const Stations = () => {
       .get(getJourneys)
       .then((response) => {
         setStations(response);
+        // console.log(response);
       })
       .catch((err) => {
         console.log(err);
@@ -59,13 +77,7 @@ const Stations = () => {
 
   return (
     <div>
-      <input
-        placeholder="Search..."
-        type="text"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-
+      <Search handleSearch={handleSearch} />
       <TablePagination
         rowsPerPageOptions={[10, 25, 50, 100]}
         component="div"
@@ -90,15 +102,9 @@ const Stations = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {stations.data &&
-                stations.data
+              {filteredList &&
+                filteredList
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .filter((item) => {
-                    return search.toLowerCase() === ""
-                      ? item
-                      : item.nimi.toLowerCase().includes(search) ||
-                          item.osoite.toLowerCase().includes(search);
-                  })
                   .map((station) => (
                     <TableRow
                       hover
