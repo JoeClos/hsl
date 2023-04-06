@@ -33,6 +33,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 const Stations = () => {
   const [stations, setStations] = useState([]);
 
+  // Stations search
   const [search, setSearch] = useState("");
 
   const handleSearch = (query) => {
@@ -42,13 +43,8 @@ const Stations = () => {
   const filteredList = (stations.data || []).filter((station) =>
     station.nimi.toLowerCase().includes(search.toLowerCase())
   );
-  // search
-  // const [search, setSearch] = useState("");
-  // const filteredStations = (stations.data || []).filter((item) =>
-  //   item.nimi.toLowerCase().includes(search.toLowerCase())
-  // );
-
-  // pagination
+  
+  // List pagination
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
 
