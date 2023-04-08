@@ -22,6 +22,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import { styled } from "@mui/material/styles";
 import Search from "./Search";
+import { FaArrowAltCircleUp, FaArrowAltCircleDown } from "react-icons/fa";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -32,6 +33,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 const Stations = () => {
   const [stations, setStations] = useState([]);
+  const [sorted, setSorted] = useState({ sorted: "nimi", reversed: false });
 
   // Stations search
   const [search, setSearch] = useState("");
@@ -40,10 +42,32 @@ const Stations = () => {
     setSearch(query);
   };
 
-  const filteredList = (stations.data || []).filter((station) =>
+  const filteredList = stations.filter((station) =>
     station.nimi.toLowerCase().includes(search.toLowerCase())
   );
-  
+
+  // Sorting stations
+  const sortByName = () => {
+    const sortedStations = [...stations];
+    sortedStations.sort((a, b) => {
+      const departureA = `${a.nimi}`;
+      const departureB = `${b.nimi}`;
+      if (sorted.reversed) {
+        return departureB.localeCompare(departureA);
+      }
+      return departureA.localeCompare(departureB);
+    });
+    setStations(sortedStations);
+    setSorted({ sorted: "nimi", reversed: !sorted.reversed });
+  };
+
+  const renderArrow = () => {
+    if (sorted.reversed) {
+      return <FaArrowAltCircleUp/>;
+    }
+    return <FaArrowAltCircleDown/>;
+  };
+
   // List pagination
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
@@ -63,8 +87,8 @@ const Stations = () => {
     axios
       .get(getJourneys)
       .then((response) => {
-        setStations(response);
-        // console.log(response);
+        setStations(response.data);
+        console.log(response.data);
       })
       .catch((err) => {
         console.log(err);
@@ -77,7 +101,7 @@ const Stations = () => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 50, 100]}
         component="div"
-        count={(stations.data || []).length}
+        count={stations.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -88,7 +112,12 @@ const Stations = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <StyledTableCell>Station name</StyledTableCell>
+                <StyledTableCell onClick={sortByName}>
+                  <span style={{ marginRight: 10 }}> Station name</span>
+                  {sorted.sorted === "departure_station_name"
+                    ? renderArrow()
+                    : null}
+                </StyledTableCell>
                 <StyledTableCell>Address</StyledTableCell>
                 <StyledTableCell>City</StyledTableCell>
                 <StyledTableCell>Operator</StyledTableCell>
