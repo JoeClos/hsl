@@ -4,6 +4,7 @@ import { api } from "../config";
 import { TablePagination } from "@mui/material";
 import Search from "./Search";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Journeys = () => {
   const [journeys, setJourneys] = useState([]);
@@ -113,6 +114,7 @@ const Journeys = () => {
               ))}
         </tbody>
       </table>
+      <Link to={`/`}>Back to home page</Link>
     </div>
   );
 };
