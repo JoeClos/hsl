@@ -23,35 +23,46 @@ app.get("/", (req, res) => {
 // Fetch all journeys
 app.get("/journeys", async (req, res) => {
   res.header({ "Cache-control": "public, max-age=300" });
-  // Pagination
-  const page = req.query.page || 1;
-  const limit = req.query.limit || 1000;
-  const skip = (page - 1) * limit;
-  const journeys = await Journeys.find({
-    duration: { $gt: 10 },
-    covered_distance: { $gt: 10 },
-  })
-    .skip(skip)
-    .limit(limit);
-//   console.log(journeys);
-
-  res.json(journeys);
+  try {
+    // Pagination
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 3000;
+    const skip = (page - 1) * limit;
+    const journeys = await Journeys.find({
+      duration: { $gt: 10 },
+      covered_distance: { $gt: 10 },
+    })
+      .skip(skip)
+      .limit(limit);
+    res.json(journeys);
+  } catch (e) {
+    console.error(e);
+  }
 });
-
 
 // Fetch all stations
 app.get("/stations", async (req, res) => {
-  const stations = await Stations.find();
-  res.json(stations);
+  try {
+    const stations = await Stations.find();
+    res.json(stations);
+  } catch (e) {
+    console.error(e);
+  }
 });
 
 // Fetch station by ID
 app.get("/stations/:id", async (req, res) => {
-    res.header({ "Cache-control": "public, max-age=300" });
+  res.header({ "Cache-control": "public, max-age=300" });
+  try {
     const stationID = await Stations.findById(req.params.id);
-    console.log(stationID)
-    res.json(stationID)
+    console.log(stationID);
+    res.json(stationID);
+  } catch (e) {
+    console.error(e);
+  }
 });
+
+// count
 
 app.listen(port, () => {
   console.log(`Now listening on port ${port}`);
