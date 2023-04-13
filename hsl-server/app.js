@@ -26,7 +26,7 @@ app.get("/journeys", async (req, res) => {
   try {
     // Pagination
     const page = req.query.page || 1;
-    const limit = req.query.limit || 3000;
+    const limit = req.query.limit || 10000;
     const skip = (page - 1) * limit;
     const journeys = await Journeys.find({
       duration: { $gt: 10 },
