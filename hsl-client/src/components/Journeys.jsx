@@ -11,6 +11,7 @@ const Journeys = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
   const [sorted, setSorted] = useState({ sorted: "departure_station_name", reversed: false });
+  const [loading, setLoading] = useState(true);
 
   // Journeys search
   const [search, setSearch] = useState("");
@@ -61,12 +62,23 @@ const Journeys = () => {
       .get(getJourneys)
       .then((response) => {
         setJourneys(response.data);
+        setLoading(false);
         console.log(response.data);
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+      .finally(() => setLoading(false));
   }, []);
+
+  if (loading) {
+    return (
+      <div className="position">
+        <div className="loader"></div>
+        <h3>Loading ...</h3>
+      </div>
+    );
+  }
 
   return (
     <div>

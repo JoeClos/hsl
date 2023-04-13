@@ -31,9 +31,10 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-const Stations = () => {
+const Stations = (props) => {
   const [stations, setStations] = useState([]);
   const [sorted, setSorted] = useState({ sorted: "nimi", reversed: false });
+  const [loading, setLoading] = useState(true);
 
   // Stations search
   const [search, setSearch] = useState("");
@@ -88,12 +89,23 @@ const Stations = () => {
       .get(getJourneys)
       .then((response) => {
         setStations(response.data);
+        setLoading(false);
         console.log(response.data);
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+      .finally(() => setLoading(false));
   }, []);
+
+  if (loading) {
+    return (
+      <div className="position">
+        <div className="loader"></div>
+        <h3>Loading ...</h3>
+      </div>
+    );
+  }
 
   return (
     <div>
