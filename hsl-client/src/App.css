@@ -2,11 +2,16 @@
   height: 180px;
 }
 
-.leaflet-container{
+.leaflet-container {
   height: 80vh;
-  width: 100vh;
+  width: 155vh;
   border: solid 2px lightgrey;
-  margin: 1rem 0;
+  /* margin: 1rem 0; */
+}
+
+#station-map{
+  width: 100vh;
+
 }
 
 /* a spinner while loading the data  */
@@ -33,4 +38,3 @@
     transform: rotate(360deg);
   }
 }
-

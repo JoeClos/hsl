@@ -5,6 +5,8 @@ import { TablePagination } from "@mui/material";
 import Search from "./Search";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import Fab from "@mui/material/Fab";
+import ArrowLeftSharpIcon from '@mui/icons-material/ArrowLeftSharp';
 
 const Journeys = () => {
   const [journeys, setJourneys] = useState([]);
@@ -82,7 +84,13 @@ const Journeys = () => {
 
   return (
     <div>
-      <Search handleSearch={handleSearch} />
+      <div>
+        <Search handleSearch={handleSearch} />
+        <Fab variant="extended">
+              <ArrowLeftSharpIcon sx={{ mr: 1 }} />
+              <Link to={`/`} style={{textDecoration: "none", color: "black"}}>Home</Link>
+            </Fab>
+      </div>
       <TablePagination
         rowsPerPageOptions={[10, 25, 50, 100]}
         component="div"
@@ -126,7 +134,6 @@ const Journeys = () => {
               ))}
         </tbody>
       </table>
-      <Link to={`/`}>Back to home page</Link>
     </div>
   );
 };

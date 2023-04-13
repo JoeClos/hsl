@@ -15,6 +15,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { Link } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import Divider from "@mui/material/Divider";
+import Paper from "@mui/material/Paper";
 
 const HomePage = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -171,7 +172,10 @@ const HomePage = () => {
           }}
         >
           {/* Map */}
-          <Map />
+          <Paper elevation={16} style={{margin:"1rem 0"}}>
+            <Map />
+          </Paper>
+
           {/* Footer */}
           <Typography>
             See source code:

@@ -16,13 +16,15 @@ import {
   ListItemText,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import ReadMoreOutlinedIcon from "@mui/icons-material/ReadMoreOutlined";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import { styled } from "@mui/material/styles";
 import Search from "./Search";
 import { FaArrowAltCircleUp, FaArrowAltCircleDown } from "react-icons/fa";
+import Fab from "@mui/material/Fab";
+import ArrowLeftSharpIcon from "@mui/icons-material/ArrowLeftSharp";
+import LocationSearchingSharpIcon from "@mui/icons-material/LocationSearchingSharp";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -64,9 +66,9 @@ const Stations = (props) => {
 
   const renderArrow = () => {
     if (sorted.reversed) {
-      return <FaArrowAltCircleUp/>;
+      return <FaArrowAltCircleUp />;
     }
-    return <FaArrowAltCircleDown/>;
+    return <FaArrowAltCircleDown />;
   };
 
   // List pagination
@@ -109,7 +111,15 @@ const Stations = (props) => {
 
   return (
     <div>
-      <Search handleSearch={handleSearch} />
+      <div>
+        <Search handleSearch={handleSearch} />
+        <Fab variant="extended">
+          <ArrowLeftSharpIcon sx={{ mr: 1 }} />
+          <Link to={`/`} style={{ textDecoration: "none", color: "black" }}>
+            Home
+          </Link>
+        </Fab>
+      </div>
       <TablePagination
         rowsPerPageOptions={[10, 25, 50, 100]}
         component="div"
@@ -160,20 +170,11 @@ const Stations = (props) => {
                           <ListItem>
                             <ListItemAvatar>
                               <Avatar>
-                                <LocationOnOutlinedIcon />
-                              </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText primary="Lat" secondary={station.x} />
-                          </ListItem>
-                          <ListItem>
-                            <ListItemAvatar>
-                              <Avatar>
-                                <LocationOnOutlinedIcon />
+                                <LocationSearchingSharpIcon />
                               </Avatar>
                             </ListItemAvatar>
                             <ListItemText
-                              primary="Long"
-                              secondary={station.y}
+                              secondary={[station.y, <br />, station.x]}
                             />
                           </ListItem>
                         </List>
