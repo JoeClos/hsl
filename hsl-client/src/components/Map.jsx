@@ -1,11 +1,13 @@
 import "../App.css";
+import MarkerClusterGroup from "react-leaflet-cluster";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 import icon from "../constant";
 import { useEffect, useState } from "react";
 import { api } from "../config";
 import axios from "axios";
 
-const Map = ({stations}) => {
+const Map = () => {
   const [coord, setCoord] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -16,7 +18,6 @@ const Map = ({stations}) => {
       .then((response) => {
         setCoord(response.data);
         setLoading(false);
-        console.log(response.data[0].x, response.data[0].y);
       })
       .catch((err) => {
         console.log(err);
@@ -39,12 +40,19 @@ const Map = ({stations}) => {
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {coord &&
-        coord.map((c, index) => (
-          <Marker key={index} position={[c.y, c.x]} icon={icon}>
-            <Popup>{c.nimi}</Popup>
-          </Marker> 
-        ))}
+      <MarkerClusterGroup chunkedLoading>
+        {coord &&
+          coord.map((address, index) => (
+            <Marker
+              key={index}
+              position={[address.y, address.x]}
+              title={address.nimi}
+              icon={icon}
+            >
+              <Popup>{address.nimi}</Popup>
+            </Marker>
+          ))}
+      </MarkerClusterGroup>
     </MapContainer>
   );
 };
