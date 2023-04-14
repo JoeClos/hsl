@@ -13,7 +13,12 @@ const port = process.env.PORT || 8000;
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect(URL, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(URL, { useNewUrlParser: true, useUnifiedTopology: true })
+.then(() => {
+  console.log('Connected to MongoDB')
+}).catch(err => {
+  console.error(err)
+})
 
 // Get homepage
 app.get("/", (req, res) => {
