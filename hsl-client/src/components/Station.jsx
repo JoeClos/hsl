@@ -11,17 +11,21 @@ import Fab from "@mui/material/Fab";
 import ArrowLeftSharpIcon from "@mui/icons-material/ArrowLeftSharp";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import Chip from "@mui/material/Chip";
 
-const Station = (props) => {
+const Station = () => {
   const { stationID } = useParams();
   //   console.log(stationID);
 
   const [station, setStation] = useState();
-  const [error, setError] = useState();
+  const [departureJourneys, setDepartureJourneys ] = useState();
+  const [ returnJourneys, setReturnJourneys ] = useState();
+
+  // const [error, setError] = useState();
 
   useEffect(() => {
     const getStationById = api + `/stations/${stationID}`;
+    const departingJourneys = api + `/journeys?display=count&departureStationId=${stationID}`;
+    const returningJourneys = api + `/journeys?display=count&returnStationId=${stationID}`;
 
     axios
       .get(getStationById)
@@ -30,13 +34,35 @@ const Station = (props) => {
         console.log(response.data.x);
       })
       .catch((err) => {
-        setError(err.message);
+        console.log(err);
       });
+
+    axios
+      .get(departingJourneys)
+      .then((response) => {
+        setDepartureJourneys(response.data);
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+      
+    axios
+      .get(returningJourneys)
+      .then((response) => {
+        setReturnJourneys(response.data);
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+
   }, [stationID, setStation]);
 
-  if (station === undefined) {
-    return <div>{error || "Loading"} </div>;
-  }
+  // if (station === undefined) {
+  //   return <div>{error || "Loading"} </div>;
+  // }
 
   return (
     <div
@@ -75,10 +101,10 @@ const Station = (props) => {
           }}
         >
           <Typography variant="body1" gutterBottom>
-            From {station.data.nimi}: <Chip label="COUNT" />
+            Journeys from <b>{station.data.nimi}</b>: { departureJourneys }
           </Typography>
           <Typography variant="body1" gutterBottom>
-            Ending at the {station.data.nimi}: <Chip label="COUNT" />
+          Journeys ennding at the <b>{station.data.nimi}</b>: { returnJourneys }
           </Typography>
         </div>
         <Divider textAlign="center">

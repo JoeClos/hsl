@@ -148,13 +148,13 @@ const Stations = (props) => {
               {filteredList &&
                 filteredList
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((station) => (
+                  .map((station, index) => (
                     <TableRow
                       hover
                       role="checkbox"
                       tabIndex={-1}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                      key={station._id}
+                      key={index}
                     >
                       <TableCell>{station.name}</TableCell>
                       <TableCell>{station.osoite}</TableCell>
@@ -176,7 +176,7 @@ const Stations = (props) => {
                         </List>
                       </TableCell>
                       <TableCell>
-                        <Link to={`/stations/${station._id}`}>
+                        <Link to={`/stations/${station.id}`}>
                           <ReadMoreOutlinedIcon />
                         </Link>
                       </TableCell>
