@@ -20,7 +20,7 @@ const Station = () => {
   const [departureJourneys, setDepartureJourneys ] = useState();
   const [ returnJourneys, setReturnJourneys ] = useState();
 
-  // const [error, setError] = useState();
+  const [error, setError] = useState();
 
   useEffect(() => {
     const getStationById = api + `/stations/${stationID}`;
@@ -30,10 +30,11 @@ const Station = () => {
     axios
       .get(getStationById)
       .then((response) => {
-        setStation(response);
+        setStation(response.data);
         console.log(response.data.x);
       })
       .catch((err) => {
+        setError(err.message)
         console.log(err);
       });
 
@@ -60,9 +61,9 @@ const Station = () => {
 
   }, [stationID, setStation]);
 
-  // if (station === undefined) {
-  //   return <div>{error || "Loading"} </div>;
-  // }
+  if (station === undefined) {
+    return <div>{error || "Loading"} </div>;
+  }
 
   return (
     <div
@@ -81,11 +82,11 @@ const Station = () => {
           textAlign={"center"}
           padding={"3rem"}
         >
-          {station.data.nimi}
+          {station.nimi}
         </Typography>
         <div style={{ marginBottom: "3rem" }}>
           <Typography variant="body1" gutterBottom>
-            {station.data.osoite}
+            {station.osoite}
           </Typography>
           <Divider textAlign="left">
             <b>
@@ -101,10 +102,10 @@ const Station = () => {
           }}
         >
           <Typography variant="body1" gutterBottom>
-            Journeys from <b>{station.data.nimi}</b>: { departureJourneys }
+            Journeys from <b>{station.nimi}</b>: { departureJourneys }
           </Typography>
           <Typography variant="body1" gutterBottom>
-          Journeys ennding at the <b>{station.data.nimi}</b>: { returnJourneys }
+          Journeys ennding at the <b>{station.nimi}</b>: { returnJourneys }
           </Typography>
         </div>
         <Divider textAlign="center">
@@ -128,7 +129,7 @@ const Station = () => {
 
       <Paper elevation={16}>
         <MapContainer
-          center={[station.data.y, station.data.x]}
+          center={[station.y, station.x]}
           zoom={22}
           scrollWheelZoom
           id="station-map"
@@ -137,10 +138,10 @@ const Station = () => {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <Marker position={[station.data.y, station.data.x]} icon={icon}>
+          <Marker position={[station.y, station.x]} icon={icon}>
             <Popup>
-              <b>{station.data.nimi}</b> <br />
-              <b>Address</b>: {station.data.osoite}
+              <b>{station.nimi}</b> <br />
+              <b>Address</b>: {station.osoite}
             </Popup>
           </Marker>
         </MapContainer>
