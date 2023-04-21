@@ -87,6 +87,7 @@ app.get("/stations", async (req, res) => {
 
 // Create Station
 app.post("/addStation", async (req, res) => {
+  res.header({ "Access-Control-Allow-Origin": "*" });
   // new station
   const newStation = new Stations({
     fid: req.body.fid,
