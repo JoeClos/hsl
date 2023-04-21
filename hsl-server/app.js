@@ -108,6 +108,7 @@ app.post("/addStation", async (req, res) => {
   try {
     await newStation.save();
     console.log(newStation);
+    res.redirect('/')
     res.status(201).json(newStation);
   } catch (e) {
     console.error(e);
