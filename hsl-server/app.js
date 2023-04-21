@@ -11,7 +11,7 @@ const Stations = require("./models/Stations");
 const URL = process.env.DB_URL;
 const port = process.env.PORT || 8000;
 app.use(express.json());
-app.use(cors());
+app.use(cors({origin:"https://hsl-q754.onrender.com"}));
 
 mongoose
   .connect(URL, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -87,7 +87,6 @@ app.get("/stations", async (req, res) => {
 
 // Create Station
 app.post("/addStation", async (req, res) => {
-  res.header({ "Access-Control-Allow-Origin": "*" });
   // new station
   const newStation = new Stations({
     fid: req.body.fid,
