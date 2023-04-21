@@ -11,8 +11,8 @@ const Stations = require("./models/Stations");
 const URL = process.env.DB_URL;
 const port = process.env.PORT || 8000;
 app.use(express.json());
-app.use(cors({origin:"https://hsl-q754.onrender.com"}));
-app.options('*', cors())
+app.use(cors());
+// app.options('*', cors())
 
 mongoose
   .connect(URL, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -26,7 +26,6 @@ mongoose
 // Get homepage
 app.get("/", (req, res) => {
   res.send("Welcome to SERVER");
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
 });
 
 // Fetch all journeys + counting stations starting from the station and ending to the station
@@ -108,7 +107,6 @@ app.post("/addStation", async (req, res) => {
   try {
     await newStation.save();
     console.log(newStation);
-    res.redirect('/')
     res.status(201).json(newStation);
   } catch (e) {
     console.error(e);
