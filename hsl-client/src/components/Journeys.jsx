@@ -1,18 +1,56 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { api } from "../config";
-import { TablePagination } from "@mui/material";
+import {
+  TablePagination,
+  Paper,
+  Table,
+  TableContainer,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableBody,
+  Box,
+  Typography,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { tableCellClasses } from "@mui/material/TableCell";
 import Search from "./Search";
-import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+import { FaArrowAltCircleUp, FaArrowAltCircleDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Fab from "@mui/material/Fab";
-import ArrowLeftSharpIcon from '@mui/icons-material/ArrowLeftSharp';
+import ArrowLeftSharpIcon from "@mui/icons-material/ArrowLeftSharp";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.primary.dark,
+    color: theme.palette.common.white,
+  },
+}));
+
+const theme = createTheme();
+
+theme.typography.h3 = {
+  fontSize: "1.2rem",
+  "@media (min-width:600px)": {
+    fontSize: "1.5rem",
+    color: "#1565C0",
+  },
+  [theme.breakpoints.up("md")]: {
+    fontSize: "2rem",
+  },
+};
 
 const Journeys = () => {
   const [journeys, setJourneys] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
-  const [sorted, setSorted] = useState({ sorted: "departure_station_name", reversed: false });
+  const [sorted, setSorted] = useState({
+    sorted: "departure_station_name",
+    reversed: false,
+  });
   const [loading, setLoading] = useState(true);
 
   // Journeys search
@@ -43,9 +81,9 @@ const Journeys = () => {
 
   const renderArrow = () => {
     if (sorted.reversed) {
-      return <FaArrowUp />;
+      return <FaArrowAltCircleUp />;
     }
-    return <FaArrowDown />;
+    return <FaArrowAltCircleDown />;
   };
 
   // Pagination
@@ -84,56 +122,106 @@ const Journeys = () => {
 
   return (
     <div>
-      <div>
-        <Search handleSearch={handleSearch} />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-around",
+          padding: "1rem",
+          margin: "2rem 0",
+        }}
+      >
+        <div style={{display: "flex", alignItems: "center", justifyContent: "space-between", gap:"10px"}}>
+          <DirectionsBikeIcon style={{color:"#1565C0", fontSize: "1.6rem"}}/>
+          <ThemeProvider theme={theme}>
+            <Typography variant="h3">Journeys</Typography>
+          </ThemeProvider>
+        </div>
         <Fab variant="extended">
-              <ArrowLeftSharpIcon sx={{ mr: 1 }} />
-              <Link to={`/`} style={{textDecoration: "none", color: "black"}}>Home</Link>
-            </Fab>
+          <ArrowLeftSharpIcon sx={{ mr: 1 }} />
+          <Link to={`/`} style={{ textDecoration: "none", color: "black" }}>
+            Home
+          </Link>
+        </Fab>
+        <Search handleSearch={handleSearch} />
       </div>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 50, 100]}
-        component="div"
-        count={journeys.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-      <table>
-        <thead>
-          <tr>
-            <th onClick={sortByName}>
-              <span style={{ marginRight: 10 }}>Departure</span>
-              {sorted.sorted === "departure_station_name" ? renderArrow() : null}
-            </th>
-            <th>Return</th>
-            <th>Covered distance (km)</th>
-            <th>Duration (min)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredList &&
-            filteredList
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .sort((a,b) => {
-                if(a.departure_station_name.toLowerCase() < b.departure_station_name.toLowerCase()
-                )return -1;
-                if(a.departure_station_name.toLowerCase() > b.departure_station_name.toLowerCase()
-                )return 1;
-                return 0;
 
-              })
-              .map((journey) => (
-                <tr key={journey._id}>
-                  <td>{journey.departure_station_name}</td>
-                  <td>{journey.return_station_name}</td>
-                  <td>{(journey.covered_distance / 1000).toFixed(1)} km</td>
-                  <td>{(journey.duration / 60).toFixed()} min</td>
-                </tr>
-              ))}
-        </tbody>
-      </table>
+      <Paper
+        elevation={16}
+        sx={{ width: "80%", overflow: "hidden", marginLeft: "10rem" }}
+      >
+        {" "}
+        <TableContainer sx={{ maxHeight: 530 }}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell onClick={sortByName}>
+                  <span style={{ marginRight: 10 }}>Departure</span>
+                  {sorted.sorted === "departure_station_name"
+                    ? renderArrow()
+                    : null}
+                </StyledTableCell>
+                <StyledTableCell>Return</StyledTableCell>
+                <StyledTableCell>Covered distance (km)</StyledTableCell>
+                <StyledTableCell>Duration (min)</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredList &&
+                filteredList
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .sort((a, b) => {
+                    if (
+                      a.departure_station_name.toLowerCase() <
+                      b.departure_station_name.toLowerCase()
+                    )
+                      return -1;
+                    if (
+                      a.departure_station_name.toLowerCase() >
+                      b.departure_station_name.toLowerCase()
+                    )
+                      return 1;
+                    return 0;
+                  })
+                  .map((journey) => (
+                    <TableRow
+                      key={journey._id}
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell>{journey.departure_station_name}</TableCell>
+                      <TableCell>{journey.return_station_name}</TableCell>
+                      <TableCell>
+                        {(journey.covered_distance / 1000).toFixed(1)} km
+                      </TableCell>
+                      <TableCell>
+                        {(journey.duration / 60).toFixed()} min
+                      </TableCell>
+                    </TableRow>
+                  ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
+      <Box
+        sx={{
+          margin: "auto",
+          padding: "1rem",
+          width: "fit-content",
+          alignItems: "center",
+        }}
+      >
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 50, 100]}
+          component="div"
+          count={journeys.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Box>
     </div>
   );
 };

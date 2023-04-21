@@ -4,7 +4,7 @@ import Stations from "./components/Stations";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Station from "./components/Station";
 import HomePage from "./components/HomePage";
-import Map from "./components/Map";
+import AddStation from "./components/AddStation";
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
         <Route path="/journeys" element={<Journeys />} />
         <Route path="/stations" element={<Stations />} />
         <Route path="/stations/:stationID" element={<Station />} />
-        <Route path="/map" element={<Map />} />
+        <Route path="/add" element={<AddStation />} />
       </Routes>
     </BrowserRouter>
   );

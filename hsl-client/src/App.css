@@ -5,13 +5,12 @@
 .leaflet-container {
   height: 80vh;
   width: 155vh;
-  border: solid 2px lightgrey;
+  border: solid 2px #3498db;
   /* margin: 1rem 0; */
 }
 
-#station-map{
+#station-map {
   width: 100vh;
-
 }
 
 /* a spinner while loading the data  */
@@ -38,3 +37,28 @@
     transform: rotate(360deg);
   }
 }
+
+/* @media only screen and (min-width: 375px) {
+  .leaflet-container {
+    width: 45vh;
+  }
+  
+} */
+
+/* @media only screen and (min-width: 425px) {
+  .leaflet-container {
+    width: 53vh;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .leaflet-container {
+    width: 94vh;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .leaflet-container {
+    width: 127vh;
+  }
+} */

@@ -14,6 +14,8 @@ import {
   List,
   ListItem,
   ListItemText,
+  Box,
+  Typography,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
 import ReadMoreOutlinedIcon from "@mui/icons-material/ReadMoreOutlined";
@@ -25,15 +27,30 @@ import { FaArrowAltCircleUp, FaArrowAltCircleDown } from "react-icons/fa";
 import Fab from "@mui/material/Fab";
 import ArrowLeftSharpIcon from "@mui/icons-material/ArrowLeftSharp";
 import LocationSearchingSharpIcon from "@mui/icons-material/LocationSearchingSharp";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: theme.palette.primary.dark,
     color: theme.palette.common.white,
   },
 }));
 
-const Stations = (props) => {
+const theme = createTheme();
+
+theme.typography.h3 = {
+  fontSize: "1.2rem",
+  "@media (min-width:600px)": {
+    fontSize: "1.5rem",
+    color: "#1565C0",
+  },
+  [theme.breakpoints.up("md")]: {
+    fontSize: "2rem",
+  },
+};
+
+const Stations = () => {
   const [stations, setStations] = useState([]);
   const [sorted, setSorted] = useState({ sorted: "nimi", reversed: false });
   const [loading, setLoading] = useState(true);
@@ -111,40 +128,63 @@ const Stations = (props) => {
 
   return (
     <div>
-      <div>
-        <Search handleSearch={handleSearch} />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-around",
+          padding: "1rem",
+          margin: "2rem 0",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "10px",
+          }}
+        >
+          <DirectionsBikeIcon
+            style={{ color: "#1565C0", fontSize: "1.6rem" }}
+          />
+
+          <ThemeProvider theme={theme}>
+            <Typography variant="h3">Stations List</Typography>
+          </ThemeProvider>
+        </div>
+        <Fab variant="extended">
+          <Link to={`/add`} style={{ textDecoration: "none", color: "black" }}>
+            Add Station
+          </Link>
+        </Fab>
         <Fab variant="extended">
           <ArrowLeftSharpIcon sx={{ mr: 1 }} />
           <Link to={`/`} style={{ textDecoration: "none", color: "black" }}>
             Home
           </Link>
         </Fab>
+        <Search handleSearch={handleSearch} />
       </div>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 50, 100]}
-        component="div"
-        count={stations.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-      <Paper>
-        <TableContainer>
-          <Table>
+
+      <Paper
+        elevation={16}
+        sx={{ width: "80%", overflow: "hidden", marginLeft: "10rem" }}
+      >
+        <TableContainer sx={{ maxHeight: 500 }}>
+          <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
                 <StyledTableCell onClick={sortByName}>
                   <span style={{ marginRight: 10 }}> Station name</span>
-                  {sorted.sorted === "departure_station_name"
-                    ? renderArrow()
-                    : null}
+                  {sorted.sorted === "nimi" ? renderArrow() : null}
                 </StyledTableCell>
                 <StyledTableCell>Address</StyledTableCell>
                 <StyledTableCell>City</StyledTableCell>
                 <StyledTableCell>Operator</StyledTableCell>
                 <StyledTableCell>Capacity</StyledTableCell>
-                <StyledTableCell>Coordinates</StyledTableCell>
+                <StyledTableCell style={{ textAlign: "center" }}>
+                  Coordinates
+                </StyledTableCell>
                 <StyledTableCell></StyledTableCell>
               </TableRow>
             </TableHead>
@@ -180,7 +220,7 @@ const Stations = (props) => {
                         </List>
                       </TableCell>
                       <TableCell>
-                        <Link to={`/stations/${station._id}`}>
+                        <Link to={`/stations/${station.id}`}>
                           <ReadMoreOutlinedIcon />
                         </Link>
                       </TableCell>
@@ -190,6 +230,24 @@ const Stations = (props) => {
           </Table>
         </TableContainer>
       </Paper>
+      <Box
+        sx={{
+          margin: "auto",
+          padding: "1rem",
+          width: "fit-content",
+          alignItems: "center",
+        }}
+      >
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 50, 100]}
+          component="div"
+          count={stations.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Box>
     </div>
   );
 };
