@@ -12,6 +12,7 @@ const URL = process.env.DB_URL;
 const port = process.env.PORT || 8000;
 app.use(express.json());
 app.use(cors({origin:"https://hsl-q754.onrender.com"}));
+app.options('*', cors())
 
 mongoose
   .connect(URL, { useNewUrlParser: true, useUnifiedTopology: true })
