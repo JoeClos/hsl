@@ -25,6 +25,7 @@ mongoose
 // Get homepage
 app.get("/", (req, res) => {
   res.send("Welcome to SERVER");
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
 });
 
 // Fetch all journeys + counting stations starting from the station and ending to the station
