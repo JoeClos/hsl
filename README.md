@@ -40,8 +40,11 @@ Browse the site: [HCB - Helsinki City Bikes](https://hsl-ui.netlify.app)
           - For stations:
             - https://opendata.arcgis.com/datasets/726277c507ef4914b0aec3cbcfcbfafc_0.csv 
       -  Mongoose on top of it, it's used to conveniently create and manage data in MongoDB.
-  * ### Api 
-
+  * ### Api - data fetching
+    - I limited the import of data to 5000 for journeys and pagination is implemented.
+    - Journeys that lasted for less than ten seconds are not imported.
+    - Journeys in which the distance covered is less than 10 meters are not imported.
+    - Undefined or null stations are not imported.
          
 
    
