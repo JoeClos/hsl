@@ -75,5 +75,7 @@ Browse the site: [HCB - Helsinki City Bikes](https://hsl-ui.netlify.app)
 - ### Back-end
   - ### `npm install`
     - Install the dependencies to the local `node_modules` folder and will install all modules listed as dependencies in `package.json`.
+  - ### `nodemon app.js`
+    -  Runs back-end locally and opens it on: http://localhost:8000. Nodemon will monitor for any changes in the source and automatically restart the server. 
     
 
