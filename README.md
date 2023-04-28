@@ -28,7 +28,7 @@ Browse the site: [HCB - Helsinki City Bikes](https://hsl-ui.netlify.app)
       - Station is located on the map.
    - ### Add station
       - Additionally stations can be added and saved to the database.
-###2. <ins>Back-end</ins>
+### 2. <ins>Back-end</ins>
    
 ## Technologies
  * UI
