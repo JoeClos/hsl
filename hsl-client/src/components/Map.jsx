@@ -1,37 +1,19 @@
 import "../App.css";
+import { useEffect, useState } from "react";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import icon from "../constant";
-import { useEffect, useState } from "react";
-import { api } from "../config";
+import icon from "../icon";
+import { api } from "../service/api";
 import axios from "axios";
 
 const Map = () => {
   const [coord, setCoord] = useState([]);
-  // const [position, setPosition] = useState([60.1699, 24.9384]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getStationsCoordinates = api + "/stations";
-    // navigator.geolocation.getCurrentPosition(
-    //   ({ coords }) => {
-    //     setPosition({ lat: coords.latitude, lng: coords.longitude });
-    //   },
-    //   (blocked) => {
-    //     if (blocked) {
-    //       const fetch = async () => {
-    //         try {
-    //           const { data } = await axios.get("https://ipapi.co/json");
-    //           setPosition({ lat: data.latitude, lng: data.longitude });
-    //         } catch (err) {
-    //           console.error(err);
-    //         }
-    //       };
-    //       fetch();
-    //     }
-    //   }
-    // );
+
     axios
       .get(getStationsCoordinates)
       .then((response) => {

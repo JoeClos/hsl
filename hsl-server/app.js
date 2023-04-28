@@ -1,5 +1,4 @@
 require("dotenv").config();
-// const axios = require('axios');
 const express = require("express");
 const cors = require("cors");
 
@@ -12,7 +11,6 @@ const URL = process.env.DB_URL;
 const port = process.env.PORT || 8000;
 app.use(express.json());
 app.use(cors());
-// app.options('*', cors())
 
 mongoose
   .connect(URL, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -65,19 +63,19 @@ app.get("/journeys", async (req, res) => {
 app.get("/stations", async (req, res) => {
   try {
     const stations = await Stations.find({
-      fid: { $ne: null || undefined},
-      id: { $ne: null || undefined},
-      nimi: { $ne: null || undefined},
-      namn: { $ne: null || undefined},
-      name: { $ne: null || undefined},
-      osoite: { $ne: null || undefined},
-      address: { $ne: null || undefined},
-      kaupunki: { $ne: null || undefined},
-      stad: { $ne: null || undefined},
-      operaattor: { $ne: null || undefined},
-      kapasiteet: { $ne: null || undefined},
-      x: { $ne: null || undefined},
-      y: { $ne: null || undefined},
+      fid: { $ne: null || undefined },
+      id: { $ne: null || undefined },
+      nimi: { $ne: null || undefined },
+      namn: { $ne: null || undefined },
+      name: { $ne: null || undefined },
+      osoite: { $ne: null || undefined },
+      address: { $ne: null || undefined },
+      kaupunki: { $ne: null || undefined },
+      stad: { $ne: null || undefined },
+      operaattor: { $ne: null || undefined },
+      kapasiteet: { $ne: null || undefined },
+      x: { $ne: null || undefined },
+      y: { $ne: null || undefined },
     });
     res.json(stations);
   } catch (e) {

@@ -172,7 +172,7 @@ const HomePage = () => {
           }}
         >
           {/* Map */}
-          <Paper elevation={16} style={{margin:"1rem 1rem"}}>
+          <Paper elevation={16} style={{ margin: "1rem 1rem" }}>
             <Map />
           </Paper>
 

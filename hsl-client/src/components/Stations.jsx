@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { api } from "../config";
+import { api } from "../service/api";
 import { Link } from "react-router-dom";
+import Search from "./Search";
 import {
   Paper,
   Table,
@@ -16,18 +17,18 @@ import {
   ListItemText,
   Box,
   Typography,
+  Avatar,
+  ListItemAvatar,
+  tableCellClasses,
+  createTheme,
+  ThemeProvider,
+  Fab,
 } from "@mui/material";
-import { tableCellClasses } from "@mui/material/TableCell";
-import ReadMoreOutlinedIcon from "@mui/icons-material/ReadMoreOutlined";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
 import { styled } from "@mui/material/styles";
-import Search from "./Search";
 import { FaArrowAltCircleUp, FaArrowAltCircleDown } from "react-icons/fa";
-import Fab from "@mui/material/Fab";
+import ReadMoreOutlinedIcon from "@mui/icons-material/ReadMoreOutlined";
 import ArrowLeftSharpIcon from "@mui/icons-material/ArrowLeftSharp";
 import LocationSearchingSharpIcon from "@mui/icons-material/LocationSearchingSharp";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({

@@ -5,26 +5,28 @@ import {
   Input,
   Button,
   styled,
-  Typography
+  Typography,
+  Fab,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { addStation } from '../service/api';
+import { useNavigate, Link } from "react-router-dom";
+import { addStation } from "../service/api";
 import { useState } from "react";
+import ArrowLeftSharpIcon from "@mui/icons-material/ArrowLeftSharp";
 
 const initialValue = {
-    fid: '',
-    id: '',
-    nimi: '',
-    namn: '',
-    name: '',
-    osoite: '',
-    address: '',
-    kaupunki: '',
-    stad: '',
-    operaattor: '',
-    kapasiteet: '',
-    x: '',
-    y: ''
+  fid: "",
+  id: "",
+  nimi: "",
+  namn: "",
+  name: "",
+  osoite: "",
+  address: "",
+  kaupunki: "",
+  stad: "",
+  operaattor: "",
+  kapasiteet: "",
+  x: "",
+  y: "",
 };
 
 const Container = styled(FormGroup)`
@@ -64,8 +66,19 @@ const AddStation = () => {
   };
 
   return (
-    <Container>
-      <Typography variant="h4" color="#1976D2">Add Station</Typography>
+    <Container style={{ paddingBottom: "1rem" }}>
+      <Fab variant="extended" color="primary" sx={{ marginBottom: "1rem" }}>
+        <ArrowLeftSharpIcon sx={{ mr: 1 }} />
+        <Link
+          to={`/stations`}
+          style={{ textDecoration: "none", color: "white" }}
+        >
+          Stations
+        </Link>
+      </Fab>
+      <Typography variant="h4" color="#1976D2">
+        Add Station
+      </Typography>
       <FormControl>
         <InputLabel htmlFor="my-input">FID</InputLabel>
         <Input
@@ -166,16 +179,7 @@ const AddStation = () => {
         />
       </FormControl>
       <FormControl>
-        <InputLabel htmlFor="my-input">X</InputLabel>
-        <Input
-          onChange={(e) => onValueChange(e)}
-          name="x"
-          value={x}
-          id="my-input"
-        />
-      </FormControl>
-      <FormControl>
-        <InputLabel htmlFor="my-input">Y</InputLabel>
+        <InputLabel htmlFor="my-input">LAT (y)</InputLabel>
         <Input
           onChange={(e) => onValueChange(e)}
           name="y"
@@ -183,6 +187,16 @@ const AddStation = () => {
           id="my-input"
         />
       </FormControl>
+      <FormControl>
+        <InputLabel htmlFor="my-input">LONG (x)</InputLabel>
+        <Input
+          onChange={(e) => onValueChange(e)}
+          name="x"
+          value={x}
+          id="my-input"
+        />
+      </FormControl>
+
       <FormControl>
         <Button
           variant="contained"

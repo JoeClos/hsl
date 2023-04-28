@@ -1,10 +1,9 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { api } from "../config";
-import { Link } from "react-router-dom";
+import { api } from "../service/api";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import icon from "../constant";
+import icon from "../icon";
 import "../App.css";
 import { Paper } from "@mui/material";
 import Fab from "@mui/material/Fab";
@@ -14,18 +13,19 @@ import Divider from "@mui/material/Divider";
 
 const Station = () => {
   const { stationID } = useParams();
-  //   console.log(stationID);
 
   const [station, setStation] = useState();
-  const [departureJourneys, setDepartureJourneys ] = useState();
-  const [ returnJourneys, setReturnJourneys ] = useState();
+  const [departureJourneys, setDepartureJourneys] = useState();
+  const [returnJourneys, setReturnJourneys] = useState();
 
   const [error, setError] = useState();
 
   useEffect(() => {
     const getStationById = api + `/stations/${stationID}`;
-    const departingJourneys = api + `/journeys?display=count&departureStationId=${stationID}`;
-    const returningJourneys = api + `/journeys?display=count&returnStationId=${stationID}`;
+    const departingJourneys =
+      api + `/journeys?display=count&departureStationId=${stationID}`;
+    const returningJourneys =
+      api + `/journeys?display=count&returnStationId=${stationID}`;
 
     axios
       .get(getStationById)
@@ -34,7 +34,7 @@ const Station = () => {
         console.log(response.data.x);
       })
       .catch((err) => {
-        setError(err.message)
+        setError(err.message);
         console.log(err);
       });
 
@@ -47,7 +47,7 @@ const Station = () => {
       .catch((err) => {
         console.log(err);
       });
-      
+
     axios
       .get(returningJourneys)
       .then((response) => {
@@ -57,8 +57,6 @@ const Station = () => {
       .catch((err) => {
         console.log(err);
       });
-
-
   }, [stationID, setStation]);
 
   if (station === undefined) {
@@ -104,10 +102,10 @@ const Station = () => {
           }}
         >
           <Typography variant="body1" gutterBottom>
-            Journeys from <b>{station.nimi}</b>: { departureJourneys }
+            Journeys from <b>{station.nimi}</b>: {departureJourneys}
           </Typography>
           <Typography variant="body1" gutterBottom>
-          Journeys ennding at the <b>{station.nimi}</b>: { returnJourneys }
+            Journeys ennding at the <b>{station.nimi}</b>: {returnJourneys}
           </Typography>
         </div>
         <Divider textAlign="center">
@@ -116,7 +114,7 @@ const Station = () => {
           </b>
         </Divider>
 
-        <div style={{textAlign:"center", marginTop:"3rem"}}>
+        <div style={{ textAlign: "center", marginTop: "3rem" }}>
           <Fab variant="extended">
             <Link
               to={`/stations`}
@@ -137,8 +135,8 @@ const Station = () => {
           id="station-map"
         >
           <TileLayer
-           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors <br/><a target="_blanck" href="https://commons.wikimedia.org/wiki/File:BicycleMarkerSymbol.png">BicycleMarkerSymbol</a>: <a href="https://commons.wikimedia.org/wiki/File:BicycleMarkerSymbol.png">Lindsey.danielson</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, via Wikimedia Commons'
-           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors <br/><a target="_blanck" href="https://commons.wikimedia.org/wiki/File:BicycleMarkerSymbol.png">BicycleMarkerSymbol</a>: <a href="https://commons.wikimedia.org/wiki/File:BicycleMarkerSymbol.png">Lindsey.danielson</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, via Wikimedia Commons'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <Marker position={[station.y, station.x]} icon={icon}>
             <Popup>

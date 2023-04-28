@@ -1,8 +1,7 @@
-import axios from 'axios';
+import axios from "axios";
 
-const stationsUrl = 'https://hsl-q754.onrender.com';
-// const stationsUrl = 'http://localhost:8000';
+export const api = "https://hsl-q754.onrender.com";
 
 export const addStation = async (station) => {
-    return await axios.post(`${stationsUrl}/addStation`, station);
-}
+  return await axios.post(`${api}/addStation`, station);
+};

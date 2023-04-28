@@ -1,9 +1,9 @@
 import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HomePage from "./components/HomePage";
 import Journeys from "./components/Journeys";
 import Stations from "./components/Stations";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Station from "./components/Station";
-import HomePage from "./components/HomePage";
 import AddStation from "./components/AddStation";
 
 function App() {

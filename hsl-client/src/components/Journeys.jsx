@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { api } from "../config";
+import { api } from "../service/api";
 import {
   TablePagination,
   Paper,
@@ -130,8 +130,17 @@ const Journeys = () => {
           margin: "2rem 0",
         }}
       >
-        <div style={{display: "flex", alignItems: "center", justifyContent: "space-between", gap:"10px"}}>
-          <DirectionsBikeIcon style={{color:"#1565C0", fontSize: "1.6rem"}}/>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "10px",
+          }}
+        >
+          <DirectionsBikeIcon
+            style={{ color: "#1565C0", fontSize: "1.6rem" }}
+          />
           <ThemeProvider theme={theme}>
             <Typography variant="h3">Journeys</Typography>
           </ThemeProvider>

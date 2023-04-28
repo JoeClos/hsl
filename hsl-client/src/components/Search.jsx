@@ -1,8 +1,5 @@
-import { Paper } from "@mui/material";
-import InputBase from "@mui/material/InputBase";
+import { Paper, Divider, InputBase, IconButton } from "@mui/material";
 import LocationSearchingOutlinedIcon from "@mui/icons-material/LocationSearchingOutlined";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
 
 const Search = ({ handleSearch }) => {
   return (
