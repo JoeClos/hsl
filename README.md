@@ -33,9 +33,12 @@ Browse the site: [HCB - Helsinki City Bikes](https://hsl-ui.netlify.app)
 ### 2. <ins>Back-end</ins>
   - ### Database
       -  MongoDb is used for this project to import big ammount of data from CSV files. 
-          - https://dev.hsl.fi/citybikes/od-trips-2021/2021-05.csv 
-          - https://dev.hsl.fi/citybikes/od-trips-2021/2021-06.csv
-          - https://dev.hsl.fi/citybikes/od-trips-2021/2021-07.csv
+          - For journeys:
+            - https://dev.hsl.fi/citybikes/od-trips-2021/2021-05.csv 
+            - https://dev.hsl.fi/citybikes/od-trips-2021/2021-06.csv
+            - https://dev.hsl.fi/citybikes/od-trips-2021/2021-07.csv
+          - For stations:
+            - https://opendata.arcgis.com/datasets/726277c507ef4914b0aec3cbcfcbfafc_0.csv 
       -  Mongoose on top of it, it's used to conveniently create and manage data in MongoDB.
   * ### Api 
 
