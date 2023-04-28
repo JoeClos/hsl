@@ -22,9 +22,11 @@ Browse the site: [HCB - Helsinki City Bikes](https://hsl-ui.netlify.app)
 - **Single station view**
    - Displays station
       - name, 
-      - address
+      - address,
       - total number of journeys starting from the station and ending at the station.
    - Station is located on the map.
+- **Add station**
+   - Additionally stations can be added and saved to the database.
    
 ## Technologies
  * UI
@@ -35,6 +37,7 @@ Browse the site: [HCB - Helsinki City Bikes](https://hsl-ui.netlify.app)
  * Back-End
    - [Node.js](https://nodejs.org/en)
    - [Express](https://expressjs.com/)
+   - [MongoDB](https://www.mongodb.com/)
    - [Mongoose](https://mongoosejs.com/docs/index.html)
     
 
