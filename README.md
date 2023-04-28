@@ -63,6 +63,8 @@ Browse the site: [HCB - Helsinki City Bikes](https://hsl-ui.netlify.app)
 ### Environment setup
 1. Install Node.js
 2. Clone this repository or download ZIP. 
+3. Set up database:
+    - Sign in MongoDB atlas and connect via Compass. Steps to follow [here](https://www.mongodb.com/docs/atlas/compass-connection/).
 
 ### Commands
 - ### UI
@@ -76,6 +78,15 @@ Browse the site: [HCB - Helsinki City Bikes](https://hsl-ui.netlify.app)
   - ### `npm install`
     - Install the dependencies to the local `node_modules` folder and will install all modules listed as dependencies in `package.json`.
   - ### `nodemon app.js`
-    -  Runs back-end locally and opens it on: http://localhost:8000. Nodemon will monitor for any changes in the source and automatically restart the server. 
+    -  Runs back-end locally and opens it on: http://localhost:8000. Nodemon will monitor for any changes in the source and automatically restart the server.
+    -  For visualising the journeys, navigate to http://localhost:8000/journeys.
+    -  For stations, navigate to http://localhost:8000/stations/{id}.
+    -  For counting journeys starting from the station: </br> Ex: http://localhost:8000/journeys?display=count&departureStationId=departure_station_id.
+    ![Screenshot 2023-04-28 142751](https://user-images.githubusercontent.com/89244648/235136614-78dbb43f-53a9-4923-a8af-c8d76b690dfd.png)
+
+    -  For counting journeys ending at the station: </br> Ex: http://localhost:8000/journeys?display=count&returnStationId=return_station_id.
+    ![Screenshot 2023-04-28 143226](https://user-images.githubusercontent.com/89244648/235136962-58b9d332-572c-46f9-b8dc-b063fa8f672f.png)
+
+    
     
 
