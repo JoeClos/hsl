@@ -28,7 +28,19 @@ Browse the site: [HCB - Helsinki City Bikes](https://hsl-ui.netlify.app)
       - Station is located on the map.
    - ### Add station
       - Additionally stations can be added and saved to the database.
+      
+
 ### 2. <ins>Back-end</ins>
+  - ### Database
+      -  MongoDb is used for this project to import big ammount of data from CSV files. 
+          - https://dev.hsl.fi/citybikes/od-trips-2021/2021-05.csv 
+          - https://dev.hsl.fi/citybikes/od-trips-2021/2021-06.csv
+          - https://dev.hsl.fi/citybikes/od-trips-2021/2021-07.csv
+      -  Mongoose on top of it, it's used to conveniently create and manage data in MongoDB.
+  * ### Api 
+
+         
+
    
 ## Technologies
  * UI
