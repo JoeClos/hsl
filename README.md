@@ -19,6 +19,12 @@ Browse the site: [HCB - Helsinki City Bikes](https://hsl-ui.netlify.app)
    - Each stations shows station name, address, city and operator (where applicable), capacity and coordinates.
    - Seaching is implemented, filtering and displaying station by station name.
    - Stations can be ordered alphabetically by station name.
+- **Single station view**
+   - Displays station
+      - name, 
+      - address
+      - total number of journeys starting from the station and ending at the station.
+   - Station is located on the map.
    
 ## Technologies
  * UI
