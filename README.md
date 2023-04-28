@@ -7,25 +7,25 @@ Browse the site: [HCB - Helsinki City Bikes](https://hsl-ui.netlify.app)
 ![hsl](https://user-images.githubusercontent.com/89244648/235082404-1aaad47d-dd20-4eeb-a4e8-02183f4103f8.png)
 ## Main features
 
-* **Front page**
+* ### Front page
    - Displays stations markers clustered on the map. Clusters show the numbers of markers contained.
-- **Journeys**
+- ### Journeys
    - Lists journeys in a paginated table, with a default of 10 journeys/page. Other options are: 25, 50, 100 journeys/page out of total: 5000.
    - Each journey shows departure and return stations, covered distance in kilometers and duration in minutes.
    - Searching is implemented and it is filtering and displaying journeys by departure station name.
    - Journeys can be ordered alphabetically by departure station name.
-- **Stations**   
+- ### Stations  
    - Lists stations in a paginated table, with a default of 10 stations/page. Other options are: 25, 50, 100 stations/page.
    - Each stations shows station name, address, city and operator (where applicable), capacity and coordinates.
    - Seaching is implemented, filtering and displaying station by station name.
    - Stations can be ordered alphabetically by station name.
-- **Single station view**
+- ### Single station view
    - Displays station
       - name, 
       - address,
       - total number of journeys starting from the station and ending at the station.
    - Station is located on the map.
-- **Add station**
+- ### Add station
    - Additionally stations can be added and saved to the database.
    
 ## Technologies
