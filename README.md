@@ -45,9 +45,7 @@ Browse the site: [HCB - Helsinki City Bikes](https://hsl-ui.netlify.app)
     - Journeys that lasted for less than ten seconds are not imported.
     - Journeys in which the distance covered is less than 10 meters are not imported.
     - Undefined or null stations are not imported.
-         
-
-   
+       
 ## Technologies
  * UI
    - [React ](https://react.dev/)
@@ -59,5 +57,23 @@ Browse the site: [HCB - Helsinki City Bikes](https://hsl-ui.netlify.app)
    - [Express](https://expressjs.com/)
    - [MongoDB](https://www.mongodb.com/)
    - [Mongoose](https://mongoosejs.com/docs/index.html)
+
+## Development environment
+- [Node.js 18.14.2](https://nodejs.org/en) is installed.
+### Environment setup
+1. Install Node.js
+2. Clone this repository or download ZIP. 
+
+### Commands
+- ### UI
+  - ### `npm install`
+    - Install the dependencies to the local `node_modules` folder and will install all modules listed as dependencies in `package.json`.
+  - ### `npm start`
+    - Runs UI locally and opens it in the default browser on: http://localhost:3000.
+  - ### `npm run build`
+    - Builds development version of the UI to the `./build` folder.
+- ### Back-end
+  - ### `npm install`
+    - Install the dependencies to the local `node_modules` folder and will install all modules listed as dependencies in `package.json`.
     
 
