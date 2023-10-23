@@ -10,6 +10,8 @@ import Fab from "@mui/material/Fab";
 import ArrowLeftSharpIcon from "@mui/icons-material/ArrowLeftSharp";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
+import Button from "@mui/material/Button";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 const Station = () => {
   const { stationID } = useParams();
@@ -105,17 +107,23 @@ const Station = () => {
             Journeys from <b>{station.nimi}</b>: {departureJourneys}
           </Typography>
           <Typography variant="body1" gutterBottom>
-            Journeys ennding at the <b>{station.nimi}</b>: {returnJourneys}
+            Journeys ending at the <b>{station.nimi}</b>: {returnJourneys}
           </Typography>
         </div>
-        <Divider textAlign="center">
+        {/* <Divider textAlign="center">
           <b>
             <em>TOTAL</em>
+          </b>
+        </Divider> */}
+        <Divider textAlign="left" style={{ textTransform: "uppercase" }}>
+          <b>
+            {" "}
+            <em>Journeys</em>
           </b>
         </Divider>
 
         <div style={{ textAlign: "center", marginTop: "3rem" }}>
-          <Fab variant="extended">
+          {/* <Fab variant="extended">
             <Link
               to={`/stations`}
               style={{ textDecoration: "none", color: "black" }}
@@ -123,7 +131,16 @@ const Station = () => {
               <ArrowLeftSharpIcon sx={{ mr: 1 }} />
               Station List
             </Link>
-          </Fab>
+          </Fab> */}
+
+          <Button
+            variant="contained"
+            startIcon={<ArrowBackIosIcon />}
+            component={Link}
+            to="/stations"
+          >
+            Stations
+          </Button>
         </div>
       </div>
 

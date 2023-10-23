@@ -22,12 +22,14 @@ import {
   tableCellClasses,
   createTheme,
   ThemeProvider,
-  Fab,
+  // Fab,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { FaArrowAltCircleUp, FaArrowAltCircleDown } from "react-icons/fa";
 import ReadMoreOutlinedIcon from "@mui/icons-material/ReadMoreOutlined";
+import Button from "@mui/material/Button";
 import ArrowLeftSharpIcon from "@mui/icons-material/ArrowLeftSharp";
+import AddIcon from "@mui/icons-material/Add";
 import LocationSearchingSharpIcon from "@mui/icons-material/LocationSearchingSharp";
 import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
 
@@ -150,10 +152,10 @@ const Stations = () => {
           />
 
           <ThemeProvider theme={theme}>
-            <Typography variant="h3">Stations List</Typography>
+            <Typography variant="h3">Stations</Typography>
           </ThemeProvider>
         </div>
-        <Fab variant="extended">
+        {/* <Fab variant="extended">
           <Link to={`/add`} style={{ textDecoration: "none", color: "black" }}>
             Add Station
           </Link>
@@ -163,7 +165,28 @@ const Stations = () => {
           <Link to={`/`} style={{ textDecoration: "none", color: "black" }}>
             Home
           </Link>
-        </Fab>
+        </Fab> */}
+
+        {/* Button to homepage */}
+        <Button variant="contained" component={Link} to="/">
+          Home
+        </Button>
+
+        {/* Button to journeys */}
+        <Button variant="contained" component={Link} to="/journeys">
+          Journeys
+        </Button>
+
+        {/* Button for adding a new station */}
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          component={Link}
+          to="/add"
+        >
+          Add station
+        </Button>
+
         <Search handleSearch={handleSearch} />
       </div>
 
@@ -221,8 +244,9 @@ const Stations = () => {
                         </List>
                       </TableCell>
                       <TableCell>
-                        <Link to={`/stations/${station.id}`}>
+                        <Link to={`/stations/${station.id}`} style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
                           <ReadMoreOutlinedIcon />
+                          See station
                         </Link>
                       </TableCell>
                     </TableRow>

@@ -18,8 +18,11 @@ import { tableCellClasses } from "@mui/material/TableCell";
 import Search from "./Search";
 import { FaArrowAltCircleUp, FaArrowAltCircleDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import Fab from "@mui/material/Fab";
+// import Fab from "@mui/material/Fab";
+import Button from "@mui/material/Button";
 import ArrowLeftSharpIcon from "@mui/icons-material/ArrowLeftSharp";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
 
@@ -145,12 +148,20 @@ const Journeys = () => {
             <Typography variant="h3">Journeys</Typography>
           </ThemeProvider>
         </div>
-        <Fab variant="extended">
+        {/* <Fab variant="extended">
           <ArrowLeftSharpIcon sx={{ mr: 1 }} />
           <Link to={`/`} style={{ textDecoration: "none", color: "black" }}>
             Home
           </Link>
-        </Fab>
+        </Fab> */}
+        {/* Button redirecting home page */}
+        <Button variant="contained" startIcon={<ArrowBackIosIcon />} component={Link} to="/">Home
+        </Button>
+
+        {/* Button redirecting to stations page */}
+        <Button variant="contained" endIcon={<ArrowForwardIosIcon />} component={Link} to="/stations">Stations
+        </Button>
+        
         <Search handleSearch={handleSearch} />
       </div>
 

@@ -38,3 +38,14 @@
     transform: rotate(360deg);
   }
 }
+
+@media only screen and (max-width: 375px) {
+  #map {
+    height: 30%;
+  }
+
+  .leaflet-container {
+    height: 30%;
+    width: 40vh;
+  }
+}
