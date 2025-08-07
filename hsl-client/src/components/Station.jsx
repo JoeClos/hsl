@@ -44,6 +44,7 @@ const Station = () => {
       .get(departingJourneys)
       .then((response) => {
         setDepartureJourneys(response.data);
+        console.log("🚀 ~ Station ~ response.data:", response.data)
         console.log(response);
       })
       .catch((err) => {

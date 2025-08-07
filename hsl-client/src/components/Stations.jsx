@@ -231,14 +231,14 @@ const Stations = () => {
                       <TableCell>{station.kapasiteet}</TableCell>
                       <TableCell>
                         <List>
-                          <ListItem>
+                          <ListItem key={station.id}>
                             <ListItemAvatar>
                               <Avatar>
                                 <LocationSearchingSharpIcon />
                               </Avatar>
                             </ListItemAvatar>
                             <ListItemText
-                              secondary={[station.y, <br />, station.x]}
+                              secondary={[station.y, <br key={station.id}/>, station.x]}
                             />
                           </ListItem>
                         </List>

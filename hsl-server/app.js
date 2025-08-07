@@ -11,19 +11,27 @@ const URL = process.env.DB_URL;
 const port = process.env.PORT || 8000;
 app.use(express.json());
 
-const allowedOrigins = process.env.FRONTEND_URL?.split(",") || [];
-console.log("🚀 ~ process.env.FRONTEND_URL:", process.env.FRONTEND_URL)
+const allowedOrigins = (process.env.FRONTEND_URL || "")
+  .split(",")
+  .map((origin) => origin.trim());
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("CORS not allowed from this origin: " + origin));
-    }
-  }
-}));
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.error("Blocked by CORS:", origin);
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+  })
+);
 
+app.use((err, req, res, next) => {
+  console.error("Server error:", err.message);
+  res.status(500).json({ error: err.message });
+});
 
 mongoose
   .connect(URL, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -60,11 +68,14 @@ app.get("/journeys", async (req, res) => {
     if (returnStationId) {
       findParams.return_station_id = returnStationId;
     }
-    const journeys = Journeys.find(findParams).skip(skip).limit(limit);
+
     if (display === "count") {
-      res.json(await journeys.count());
+      const count = await Journeys.countDocuments(findParams); 
+      res.json(count);
       return;
     }
+
+    const journeys = await Journeys.find(findParams).skip(skip).limit(limit);
 
     res.json(await journeys);
   } catch (e) {

@@ -6,6 +6,9 @@ import "leaflet/dist/leaflet.css";
 import icon from "../icon";
 import { api } from "../service/api";
 import axios from "axios";
+import "leaflet/dist/leaflet.css";
+import "leaflet.markercluster/dist/MarkerCluster.css";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
 const Map = () => {
   const [coord, setCoord] = useState([]);
@@ -18,7 +21,7 @@ const Map = () => {
       .get(getStationsCoordinates)
       .then((response) => {
         setCoord(response.data);
-        console.log("🚀 ~ Map ~ response.data:", response.data)
+        // console.log("🚀 ~ Map ~ response.data:", response.data)
         setLoading(false);
       })
       .catch((err) => {
