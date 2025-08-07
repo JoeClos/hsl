@@ -11,8 +11,16 @@ const URL = process.env.DB_URL;
 const port = process.env.PORT || 8000;
 app.use(express.json());
 
+const allowedOrigins = process.env.FRONTEND_URL?.split(",") || [];
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS not allowed from this origin: " + origin));
+    }
+  }
 }));
 
 

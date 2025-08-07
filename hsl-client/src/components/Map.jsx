@@ -18,6 +18,7 @@ const Map = () => {
       .get(getStationsCoordinates)
       .then((response) => {
         setCoord(response.data);
+        console.log("🚀 ~ Map ~ response.data:", response.data)
         setLoading(false);
       })
       .catch((err) => {
