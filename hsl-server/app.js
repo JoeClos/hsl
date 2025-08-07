@@ -10,7 +10,11 @@ const Stations = require("./models/Stations");
 const URL = process.env.DB_URL;
 const port = process.env.PORT || 8000;
 app.use(express.json());
-app.use(cors());
+
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173'
+}));
+
 
 mongoose
   .connect(URL, { useNewUrlParser: true, useUnifiedTopology: true })
