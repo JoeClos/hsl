@@ -1,5 +1,7 @@
 import { createTheme } from "@mui/material/styles";
 
+export const mobileBottomNavOffset = { xs: "4.5rem", sm: 0 };
+
 const theme = createTheme({
   palette: {
     primary: { main: "#1565C0" },
