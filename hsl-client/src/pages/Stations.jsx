@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { api } from "../service/api";
 import { Link } from "react-router-dom";
-import Search from "./Search";
+import Search from "../components/Search";
 import {
   Paper,
   Table,
@@ -112,7 +112,7 @@ const Stations = () => {
       .then((response) => {
         setStations(response.data);
         setLoading(false);
-        console.log(response.data);
+        // console.log(response.data);
       })
       .catch((err) => {
         console.log(err);

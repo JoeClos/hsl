@@ -1,22 +1,22 @@
-import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import HomePage from "./components/HomePage";
-import Journeys from "./components/Journeys";
-import Stations from "./components/Stations";
-import Station from "./components/Station";
-import AddStation from "./components/AddStation";
+import { Routes, Route } from "react-router-dom";
+import AppLayout from "./components/AppLayout";
+import HomePage from "./pages/HomePage";
+import Journeys from "./pages/Journeys";
+import Stations from "./pages/Stations";
+import Station from "./pages/Station";
+import AddStation from "./pages/AddStation";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/journeys" element={<Journeys />} />
-        <Route path="/stations" element={<Stations />} />
-        <Route path="/stations/:stationID" element={<Station />} />
-        <Route path="/add" element={<AddStation />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route element={<AppLayout />}>
+        <Route index element={<HomePage />} />
+        <Route path="journeys" element={<Journeys />} />
+        <Route path="stations" element={<Stations />} />
+        <Route path="stations/:stationID" element={<Station />} />
+        <Route path="add" element={<AddStation />} />
+      </Route>
+    </Routes>
   );
 }
 

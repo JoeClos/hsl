@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { api } from "../service/api";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import icon from "../icon";
-import "../App.css";
 import { Paper } from "@mui/material";
 import Fab from "@mui/material/Fab";
 import ArrowLeftSharpIcon from "@mui/icons-material/ArrowLeftSharp";

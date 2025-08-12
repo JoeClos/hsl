@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { tableCellClasses } from "@mui/material/TableCell";
-import Search from "./Search";
+import Search from  "../components/Search";
 import { FaArrowAltCircleUp, FaArrowAltCircleDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
 // import Fab from "@mui/material/Fab";
@@ -106,7 +106,7 @@ const Journeys = () => {
       .then((response) => {
         setJourneys(response.data);
         setLoading(false);
-        console.log(response.data);
+        // console.log(response.data);
       })
       .catch((err) => {
         console.log(err);
