@@ -174,8 +174,8 @@ const Stations = () => {
         </Stack>
       ) : (
         // Table (desktop)
-        <Paper elevation={16} sx={{ overflow: "hidden" }}>
-          <TableContainer sx={{ maxHeight: 560, maxWidth: "100%", overflowX: "auto" }}>
+        <Paper elevation={16}>
+          <TableContainer sx={{ maxHeight: 560, maxWidth: "100%", overflow: "auto" }}>
             <Table stickyHeader size="small" sx={{ tableLayout: "fixed" }}>
               <TableHead>
                 <TableRow>

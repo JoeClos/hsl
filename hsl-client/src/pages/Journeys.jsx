@@ -174,9 +174,9 @@ const Journeys = () => {
         </Stack>
       ) : (
         // Desktop: table
-        <Paper elevation={16} sx={{ overflow: "hidden" }}>
+        <Paper elevation={16}>
           <TableContainer
-            sx={{ maxHeight: 560, maxWidth: "100%", overflowX: "auto" }}
+            sx={{ maxHeight: 560, maxWidth: "100%", overflow: "auto" }}
           >
             <Table
               stickyHeader
