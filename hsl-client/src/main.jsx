@@ -11,12 +11,11 @@ import "leaflet/dist/leaflet.css";
 
 createRoot(document.getElementById("root")).render(
   <ThemeProvider theme={theme}>
-    <CssBaseline>
-      <StrictMode>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </StrictMode>
-    </CssBaseline>
+    <CssBaseline />
+    <StrictMode>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </StrictMode>
   </ThemeProvider>
 );

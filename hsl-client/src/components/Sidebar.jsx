@@ -183,6 +183,7 @@ const Sidebar = ({
       open={mobileOpen}
       onClose={() => setMobileOpen(false)}
       ModalProps={{ keepMounted: true }}
+      slotProps={{ tabIndex: -1 }}
       sx={{
         "& .MuiDrawer-paper": { width: expandedWidth, boxSizing: "border-box" },
       }}
