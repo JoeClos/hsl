@@ -14,7 +14,7 @@ const BottomNavBar = ({ setMobileOpen }) => {
 
   useEffect(() => {
     const map = { "/": 0, "/journeys": 1, "/stations": 2, "/add": 3 };
-    setValue(map[pathname] ?? false);
+    setValue(map[pathname] ?? 0);
   }, [pathname]);
 
   return (
@@ -35,7 +35,6 @@ const BottomNavBar = ({ setMobileOpen }) => {
       <BottomNavigation
         value={value}
         onChange={(_, newValue) => {
-          setValue(newValue);
           if (newValue === "menu") {
             setMobileOpen(true);
             return;

@@ -103,9 +103,11 @@ const Sidebar = ({
                 {open && (
                   <ListItemText
                     primary={item.label}
-                    primaryTypographyProps={{
-                      color: selected ? "primary" : "inherit",
-                      fontWeight: selected ? 600 : 400,
+                    slotProps={{
+                      primary: {
+                        color: selected ? "primary" : "inherit",
+                        fontWeight: selected ? 600 : 400,
+                      },
                     }}
                   />
                 )}
@@ -182,8 +184,12 @@ const Sidebar = ({
       variant="temporary"
       open={mobileOpen}
       onClose={() => setMobileOpen(false)}
-      ModalProps={{ keepMounted: true }}
-      slotProps={{ tabIndex: -1 }}
+      slotProps={{
+        modal: {
+          keepMounted: true,
+        },
+        paper: { tabIndex: -1 },
+      }}
       sx={{
         "& .MuiDrawer-paper": { width: expandedWidth, boxSizing: "border-box" },
       }}
