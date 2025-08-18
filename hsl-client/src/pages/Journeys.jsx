@@ -26,7 +26,6 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import RouteIcon from "@mui/icons-material/Route";
 import PlaceIcon from "@mui/icons-material/Place";
 import { FaArrowAltCircleUp, FaArrowAltCircleDown } from "react-icons/fa";
-import { mobileBottomNavOffset } from "../theme";
 import ResponsivePagination from "../components/ResponsivePagination";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -113,10 +112,10 @@ const Journeys = () => {
 
   return (
     <Box>
-      <Header />
+      <Header isSmDown={isSmDown} />
 
       {/* TOP pager on mobile */}
-      <Box sx={{ display: { xs: "block", md: "none" } }}>
+      <Box sx={{ display: { xs: "block", md: "none" }, mb: 2 }}>
         <ResponsivePagination
           count={sorted.length}
           page={page}
@@ -133,12 +132,15 @@ const Journeys = () => {
 
       {/* Mobile/tablet: cards */}
       {isSmDown ? (
-        <Stack spacing={1.5}>
+        <Stack spacing={1.5} sx={{ pb: 2 }}>
           {paged.map((j, i) => (
             <Card
               key={
                 j._id || `${j.departure_station_id}-${j.return_station_id}-${i}`
               }
+              sx={{
+                mb: i === paged.length - 1 ? 2 : 0, // Extra margin only for last card
+              }}
             >
               <CardContent>
                 <Typography
@@ -239,11 +241,6 @@ const Journeys = () => {
           }}
         />
       </Box>
-
-      {/* Extra bottom space on mobile so content doesn’t sit behind bottom nav */}
-      <Box
-        sx={{ mb: mobileBottomNavOffset, display: { xs: "block", md: "none" } }}
-      />
     </Box>
   );
 };

@@ -186,7 +186,7 @@ const Sidebar = ({
       onClose={() => setMobileOpen(false)}
       slotProps={{
         modal: {
-          keepMounted: true,
+          keepMounted: true, 
         },
         paper: { tabIndex: -1 },
       }}

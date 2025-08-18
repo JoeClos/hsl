@@ -1,4 +1,4 @@
-import { useMemo, useState, useLayoutEffect } from "react";
+import { useRef, useEffect, useMemo, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { Box, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
@@ -12,52 +12,26 @@ const FULL_BLEED_PATHS = ["/"];
 
 const AppLayout = () => {
   const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up("sm")); // >= 600px
+  const isDesktop = useMediaQuery(theme.breakpoints.up("sm"));
   const location = useLocation();
   const { pathname } = location;
+  const mainRef = useRef(null);
 
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Scroll the main container to top on navigation (mobile only)
-  useLayoutEffect(() => {
-    if (isDesktop) return; // only mobile
-
-    const el = document.getElementById("app-scroll");
-    if (!el) return;
-
-    // Wait for route content to mount & layout, then scroll
-    // rAF twice is a common trick to ensure paint happened.
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        // Instant jump first to be safe on iOS overflow containers
-        el.scrollTop = 0;
-        // Try smooth (ignored if unsupported)
-        try {
-          el.scrollTo({ top: 0, behavior: "smooth" });
-        } catch {
-          /* noop */
-        }
-      });
-    });
-  }, [
-    isDesktop,
-    // location.key changes on every navigation, even when pathname is the same
-    location.key,
-    // if you prefer being explicit, you can also include:
-    // location.pathname, location.search, location.hash
-  ]);
-
-  const isFullBleed = useMemo(
-    () => FULL_BLEED_PATHS.includes(pathname),
-    [pathname]
-  );
+  const isFullBleed = useMemo(() => FULL_BLEED_PATHS.includes(pathname), [pathname]);
 
   const sidebarWidth = isDesktop
-    ? sidebarOpen
-      ? DESKTOP_EXPANDED
-      : DESKTOP_MINI
+    ? (sidebarOpen ? DESKTOP_EXPANDED : DESKTOP_MINI)
     : 0;
+
+  // Scroll to top whenever pathname changes (mobile only)
+  useEffect(() => {
+    if (!isDesktop && mainRef.current) {
+      mainRef.current.scrollTo({ top: 0, behavior: "auto" });
+    }
+  }, [pathname, isDesktop]);
 
   return (
     <Box sx={{ display: "flex", minHeight: "100dvh" }}>
@@ -72,8 +46,8 @@ const AppLayout = () => {
       />
 
       <Box
+        ref={mainRef}
         component="main"
-        id="app-scroll" // <-- the element we scroll
         sx={{
           flexGrow: 1,
           width: { md: `calc(100% - ${sidebarWidth}px)` },
@@ -82,20 +56,29 @@ const AppLayout = () => {
           bgcolor: isFullBleed ? "transparent" : "background.default",
           display: "flex",
           flexDirection: "column",
-          pb: mobileBottomNavOffset,
-          // (Optional) helps iOS feel snappier
           WebkitOverflowScrolling: "touch",
+          overflowAnchor: "none",
+          position: "relative",
+          // Modified height and padding approach
+          height: { xs: `calc(100dvh - ${mobileBottomNavOffset.xs})`, sm: "auto" },
+          pb: { xs: `calc(${mobileBottomNavOffset.xs} + 16px)`, sm: 0 },
         }}
       >
-        {isFullBleed ? (
-          <Box sx={{ flex: 1, minHeight: 0 }}>
-            <Outlet />
-          </Box>
-        ) : (
-          <Box sx={{ flex: 1, minHeight: 0, p: 2 }}>
-            <Outlet />
-          </Box>
-        )}
+        <Box sx={{ 
+          flex: 1,
+          minHeight: 0,
+          pb: { xs: 2, sm: 0 } // Additional content padding
+        }}>
+          {isFullBleed ? (
+            <Box key={location.key} sx={{ height: "100%" }}>
+              <Outlet />
+            </Box>
+          ) : (
+            <Box key={location.key} sx={{ height: "100%", p: 2 }}>
+              <Outlet />
+            </Box>
+          )}
+        </Box>
       </Box>
 
       {!isDesktop && <BottomNavBar setMobileOpen={setMobileOpen} />}

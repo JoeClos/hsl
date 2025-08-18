@@ -28,8 +28,6 @@ import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
 import LocationSearchingSharpIcon from "@mui/icons-material/LocationSearchingSharp";
 import ReadMoreOutlinedIcon from "@mui/icons-material/ReadMoreOutlined";
 import { FaArrowAltCircleUp, FaArrowAltCircleDown } from "react-icons/fa";
-
-import { mobileBottomNavOffset } from "../theme";
 import ResponsivePagination from "../components/ResponsivePagination";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -53,7 +51,9 @@ const Stations = () => {
 
   // Coordinates formatting
   const formatCoordinates = (val) =>
-  typeof val === "number" ? val.toFixed(2) : parseFloat(val)?.toFixed(2) || "—";
+    typeof val === "number"
+      ? val.toFixed(2)
+      : parseFloat(val)?.toFixed(2) || "—";
 
   useEffect(() => {
     setLoading(true);
@@ -120,7 +120,7 @@ const Stations = () => {
       <Header isSmDown={isSmDown} />
 
       {/* TOP pager on mobile */}
-      <Box sx={{ display: { xs: "block", md: "none" } }}>
+      <Box sx={{ display: { xs: "block", md: "none" }, mb: 2 }}>
         <ResponsivePagination
           count={sorted.length}
           page={page}
@@ -137,20 +137,44 @@ const Stations = () => {
 
       {/* Cards (mobile/tablet) */}
       {isSmDown ? (
-        <Stack spacing={1.5}>
+        <Stack spacing={1.5} sx={{ pb: 2 }}>
           {paged.map((s, i) => (
-            <Card key={s._id || s.id || `s-${i}`}>
+            <Card
+              key={s._id || s.id || `s-${i}`}
+              sx={{
+                mb: i === paged.length - 1 ? 2 : 0, // Extra margin only for last card
+              }}
+            >
               <CardContent>
-                <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 0.5 }}>
+                <Typography
+                  variant="subtitle1"
+                  sx={{ fontWeight: 600, mb: 0.5 }}
+                >
                   {s.nimi || s.name || "—"}
                 </Typography>
 
-                <InfoRow icon={<PlaceIcon fontSize="small" />} label="Address" value={s.osoite || s.address || "—"} />
-                <InfoRow icon={<DirectionsBikeIcon fontSize="small" />} label="City" value={s.kaupunki || s.stad || "—"} />
-                <InfoRow icon={<DirectionsBikeIcon fontSize="small" />} label="Operator" value={s.operaattor || "—"} />
-                <InfoRow icon={<DirectionsBikeIcon fontSize="small" />} label="Capacity" value={s.kapasiteet ?? "—"} />
+                <InfoRow
+                  icon={<PlaceIcon fontSize="small" />}
+                  label="Address"
+                  value={s.osoite || s.address || "—"}
+                />
+                <InfoRow
+                  icon={<DirectionsBikeIcon fontSize="small" />}
+                  label="City"
+                  value={s.kaupunki || s.stad || "—"}
+                />
+                <InfoRow
+                  icon={<DirectionsBikeIcon fontSize="small" />}
+                  label="Operator"
+                  value={s.operaattor || "—"}
+                />
+                <InfoRow
+                  icon={<DirectionsBikeIcon fontSize="small" />}
+                  label="Capacity"
+                  value={s.kapasiteet ?? "—"}
+                />
 
-                <Stack direction="row" spacing={1.25} alignItems="center" sx={{ mt: 0.5 }}>
+                <Stack direction="row" spacing={1.25} alignItems="center">
                   <Avatar sx={{ width: 24, height: 24 }}>
                     <LocationSearchingSharpIcon fontSize="small" />
                   </Avatar>
@@ -175,7 +199,9 @@ const Stations = () => {
       ) : (
         // Table (desktop)
         <Paper elevation={16}>
-          <TableContainer sx={{ maxHeight: 560, maxWidth: "100%", overflow: "auto" }}>
+          <TableContainer
+            sx={{ maxHeight: 560, maxWidth: "100%", overflow: "auto" }}
+          >
             <Table stickyHeader size="small" sx={{ tableLayout: "fixed" }}>
               <TableHead>
                 <TableRow>
@@ -185,7 +211,11 @@ const Stations = () => {
                   >
                     <Stack direction="row" spacing={1} alignItems="center">
                       <span>Station name</span>
-                      {sortDesc ? <FaArrowAltCircleDown /> : <FaArrowAltCircleUp />}
+                      {sortDesc ? (
+                        <FaArrowAltCircleDown />
+                      ) : (
+                        <FaArrowAltCircleUp />
+                      )}
                     </Stack>
                   </StyledTableCell>
                   <StyledTableCell>Address</StyledTableCell>
@@ -203,8 +233,12 @@ const Stations = () => {
                     key={s._id || s.id || `s-${i}`}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
-                    <TableCell sx={{ wordBreak: "break-word" }}>{s.name || s.nimi}</TableCell>
-                    <TableCell sx={{ wordBreak: "break-word" }}>{s.osoite || s.address}</TableCell>
+                    <TableCell sx={{ wordBreak: "break-word" }}>
+                      {s.name || s.nimi}
+                    </TableCell>
+                    <TableCell sx={{ wordBreak: "break-word" }}>
+                      {s.osoite || s.address}
+                    </TableCell>
                     <TableCell>{s.kaupunki || s.stad}</TableCell>
                     <TableCell>{s.operaattor}</TableCell>
                     <TableCell>{s.kapasiteet}</TableCell>
@@ -242,12 +276,9 @@ const Stations = () => {
           }}
         />
       </Box>
-
-      {/* Keep content above bottom nav on mobile */}
-      <Box sx={{ mb: mobileBottomNavOffset, display: { xs: "block", md: "none" } }} />
     </Box>
   );
-}
+};
 
 function Header({ isSmDown }) {
   return (
@@ -260,7 +291,11 @@ function Header({ isSmDown }) {
     >
       <Stack direction="row" spacing={1} alignItems="center">
         <DirectionsBikeIcon color="primary" />
-        <Typography variant={isSmDown ? "h6" : "h5"} color="primary" sx={{ fontWeight: 600 }}>
+        <Typography
+          variant={isSmDown ? "h6" : "h5"}
+          color="primary"
+          sx={{ fontWeight: 600 }}
+        >
           Stations
         </Typography>
       </Stack>
@@ -276,8 +311,10 @@ function InfoRow({ icon, label, value }) {
       <Typography variant="body2" color="text.secondary" sx={{ minWidth: 78 }}>
         {label}
       </Typography>
-      <Typography variant="body2" sx={{ fontWeight: 500 }}>{value}</Typography>
+      <Typography variant="body2" sx={{ fontWeight: 500 }}>
+        {value}
+      </Typography>
     </Stack>
   );
 }
- export default Stations;
+export default Stations;
