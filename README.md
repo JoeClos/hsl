@@ -4,7 +4,12 @@ A web page showing city bike trips in the Helsinki Capital area.
 My work is based on Solita's [Dev Academy pre-assignment](https://github.com/solita/dev-academy-2023-exercise).
 Browse the site: [HCB - Helsinki City Bikes](https://hsl-ui.netlify.app)
 
-![hsl](https://user-images.githubusercontent.com/89244648/235082404-1aaad47d-dd20-4eeb-a4e8-02183f4103f8.png)
+## 📸 Application Preview
+
+| Desktop View | Mobile View |
+| :---: | :---: |
+| ![Desktop](https://github.com/user-attachments/assets/3d75823a-77a5-4215-9b65-781d198818b0) | ![Mobile](https://github.com/user-attachments/assets/4e1eb096-8876-4174-8b74-5ac81776f74d) |
+
 ## Main features
 ### 1. <ins>Front-end</ins>
 
