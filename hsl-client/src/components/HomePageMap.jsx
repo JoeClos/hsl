@@ -118,7 +118,7 @@ const HomePageMap = () => {
 
       <Box sx={containerSx}>
         <MapContainer
-          center={[60.1699, 24.9384]}
+          center={[60.1920, 24.9483]}
           zoom={12}
           scrollWheelZoom
           style={{ width: "100%", height: "100%", margin: 0, padding: 0 }}
