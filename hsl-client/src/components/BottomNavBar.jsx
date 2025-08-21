@@ -19,6 +19,7 @@ const BottomNavBar = ({ setMobileOpen }) => {
 
   return (
     <Paper
+      data-bottom-nav
       elevation={8}
       sx={{
         position: "fixed",

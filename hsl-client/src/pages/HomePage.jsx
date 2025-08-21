@@ -1,6 +1,6 @@
-import FullScreenMap from "../components/FullScreenMap";
+import HomePageMap from "../components/HomePageMap";
 
 const HomePage = () => {
-  return <FullScreenMap />;
+  return <HomePageMap />;
 };
 export default HomePage;

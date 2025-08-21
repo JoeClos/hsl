@@ -5,6 +5,7 @@ import { useTheme } from "@mui/material/styles";
 import Sidebar from "./Sidebar";
 import BottomNavBar from "./BottomNavBar";
 import { mobileBottomNavOffset } from "../theme";
+import ScrollToTopButton from "./ScrollToTopButton";
 
 const DESKTOP_EXPANDED = 280;
 const DESKTOP_MINI = 72;
@@ -20,10 +21,15 @@ const AppLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const isFullBleed = useMemo(() => FULL_BLEED_PATHS.includes(pathname), [pathname]);
+  const isFullBleed = useMemo(
+    () => FULL_BLEED_PATHS.includes(pathname),
+    [pathname]
+  );
 
   const sidebarWidth = isDesktop
-    ? (sidebarOpen ? DESKTOP_EXPANDED : DESKTOP_MINI)
+    ? sidebarOpen
+      ? DESKTOP_EXPANDED
+      : DESKTOP_MINI
     : 0;
 
   // Scroll to top whenever pathname changes (mobile only)
@@ -46,6 +52,7 @@ const AppLayout = () => {
       />
 
       <Box
+         data-app-main
         ref={mainRef}
         component="main"
         sx={{
@@ -60,15 +67,20 @@ const AppLayout = () => {
           overflowAnchor: "none",
           position: "relative",
           // Modified height and padding approach
-          height: { xs: `calc(100dvh - ${mobileBottomNavOffset.xs})`, sm: "auto" },
+          height: {
+            xs: `calc(100dvh - ${mobileBottomNavOffset.xs})`,
+            sm: "auto",
+          },
           pb: { xs: `calc(${mobileBottomNavOffset.xs} + 16px)`, sm: 0 },
         }}
       >
-        <Box sx={{ 
-          flex: 1,
-          minHeight: 0,
-          pb: { xs: 2, sm: 0 } // Additional content padding
-        }}>
+        <Box
+          sx={{
+            flex: 1,
+            minHeight: 0,
+            pb: { xs: 2, sm: 0 }, // Additional content padding
+          }}
+        >
           {isFullBleed ? (
             <Box key={location.key} sx={{ height: "100%" }}>
               <Outlet />
@@ -79,6 +91,7 @@ const AppLayout = () => {
             </Box>
           )}
         </Box>
+        <ScrollToTopButton scrollContainer={mainRef} />
       </Box>
 
       {!isDesktop && <BottomNavBar setMobileOpen={setMobileOpen} />}
