@@ -89,7 +89,12 @@ const Station = () => {
 
   const center = useMemo(() => {
     if (!station) return [60.1699, 24.9384]; // Helsinki fallback
-    return [station.y, station.x];
+    const lat = Number.parseFloat(station.y);
+    const lon = Number.parseFloat(station.x);
+    return [
+      Number.isFinite(lat) ? lat : 60.1699,
+      Number.isFinite(lon) ? lon : 24.9384,
+    ];
   }, [station]);
 
   // auto-open popup on mobile
@@ -149,22 +154,24 @@ const Station = () => {
       >
         <Paper
           sx={{
-            p: 0,
-            flex: 1,
-            display: "flex",
+            // mobile: small padding; desktop: none
+            p: { xs: 1, md: 0 },
+            // mobile: don't flex-grow (prevents blank map); desktop: fill
+            flexGrow: { xs: 0, md: 1 },
+            position: "relative", // containing block for absolute MapContainer
             minWidth: 0,
             minHeight: 0,
-            height: { xs: "min(60dvh, 420px)", md: 520 },
+            height: { xs: 420, sm: 460, md: 520 },
             overflow: "hidden",
-            "& .leaflet-container": { width: "100%", height: "100%" },
           }}
         >
           <MapContainer
-            key={isMobile ? "mobile" : "desktop"} // force remount on breakpoint change
+            key={`${isMobile}-${stationID}`} // remount on viewport/id change
             center={center}
             zoom={16}
             scrollWheelZoom
-            style={{ width: "100%", height: "100%" }}
+            // Fill the wrapper reliably on all screens
+            style={{ position: "absolute", inset: 0 }}
             whenReady={(map) =>
               setTimeout(() => map.target.invalidateSize(), 0)
             }
@@ -258,6 +265,17 @@ function Header({ title }) {
       >
         {title}
       </Typography>
+
+      {!isMobile && (
+        <Button
+          variant="outlined"
+          startIcon={<ArrowBackIosIcon />}
+          component={Link}
+          to="/stations"
+        >
+          Back to stations
+        </Button>
+      )}
     </Stack>
   );
 }
@@ -298,7 +316,8 @@ function DetailsInner({ station, depCount, retCount }) {
 
       <Divider sx={{ my: 2 }} />
 
-      <Stack direction="row" spacing={3}>
+      <Stack direction={{ xs: "column", md: "row" }} spacing={{ xs: 2, md: 3 }}>
+        {" "}
         <StatBadge
           icon={<DirectionsBikeIcon fontSize="small" />}
           label="Journeys from"

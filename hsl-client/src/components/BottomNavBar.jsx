@@ -7,14 +7,23 @@ import PlaceIcon from "@mui/icons-material/Place";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import MenuIcon from "@mui/icons-material/Menu";
 
+const routes = ["/", "/journeys", "/stations", "/add"];
+
+function deriveIndex(pathname) {
+  if (pathname === "/") return 0;
+  if (pathname.startsWith("/journeys")) return 1;
+  if (pathname.startsWith("/stations")) return 2; // handles /stations and /stations/:id
+  if (pathname.startsWith("/add")) return 3;
+  return 0;
+}
+
 const BottomNavBar = ({ setMobileOpen }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [value, setValue] = useState(0);
 
   useEffect(() => {
-    const map = { "/": 0, "/journeys": 1, "/stations": 2, "/add": 3 };
-    setValue(map[pathname] ?? 0);
+    setValue(deriveIndex(pathname));
   }, [pathname]);
 
   return (
@@ -40,8 +49,7 @@ const BottomNavBar = ({ setMobileOpen }) => {
             setMobileOpen(true);
             return;
           }
-          const paths = ["/", "/journeys", "/stations", "/add"];
-          navigate(paths[newValue] || "/");
+          navigate(routes[newValue] || "/");
         }}
         showLabels
       >

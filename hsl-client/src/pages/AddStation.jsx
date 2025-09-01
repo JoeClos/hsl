@@ -213,12 +213,7 @@ const AddStation = () => {
       <Header isSmDown={isSmDown} />
 
       <Paper sx={{ p: 2 }}>
-        <Box
-          component="form"
-          noValidate
-          onSubmit={handleSubmit}
-          autoComplete="off"
-        >
+        <Box component="form" noValidate onSubmit={handleSubmit} autoComplete="off">
           <Grid container spacing={2}>
             {/* Row 1: IDs + primary name */}
             <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
