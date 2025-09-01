@@ -250,7 +250,7 @@ const Stations = () => {
                   <StyledTableCell>Operator</StyledTableCell>
                   <StyledTableCell>Capacity</StyledTableCell>
                   <StyledTableCell>Coordinates</StyledTableCell>
-                  <StyledTableCell />
+                  <StyledTableCell>Station details</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -326,7 +326,6 @@ function Header({ isSmDown, onSearch }) {
           Stations
         </Typography>
       </Stack>
-      {/* Reserved for future global search/filter controls */}
       {/* Global search */}
       <Box sx={{ width: { xs: "100%", md: "auto" } }}>
         <Search onSearch={onSearch} />

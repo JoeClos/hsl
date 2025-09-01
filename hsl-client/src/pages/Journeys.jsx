@@ -18,6 +18,8 @@ import {
   TableRow,
   useMediaQuery,
   Skeleton,
+  TextField,
+  IconButton,
 } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
 import { tableCellClasses } from "@mui/material/TableCell";
@@ -35,14 +37,43 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-const km = (m) => (m == null ? "—" : `${(m / 1000).toFixed(1)} km`);
-const mins = (s) => (s == null ? "—" : `${Math.round(s / 60)} min`);
+const distanceText = (m) => {
+  if (m == null) return "—";
+  if (m < 1000) return `${Math.round(m)} m`;
+  return `${(m / 1000).toFixed(1)} km`;
+};
+const mins = (s) => {
+  if (s == null) return "—";
+  const seconds = Math.round(s);
+  if (seconds < 60) return `${seconds} s`;
+
+  // Under an hour -> show whole minutes
+  if (seconds < 3600) {
+    const minutes = Math.round(seconds / 60);
+    return `${minutes} m`;
+  }
+
+  // 3600s+ -> show hours and remaining minutes, e.g. "1 h 30 m"
+  const hours = Math.floor(seconds / 3600);
+  let remainingSeconds = seconds - hours * 3600;
+  let minutes = Math.round(remainingSeconds / 60);
+
+  // handle rounding edge where minutes === 60 -> carry to hours
+  if (minutes === 60) {
+    minutes = 0;
+    // safe to increment since hours came from floor
+    return `${hours + 1} h`;
+  }
+
+  return minutes > 0 ? `${hours} h ${minutes} m` : `${hours} h`;
+};
 
 const Journeys = () => {
   const theme = useTheme();
   const isSmDown = useMediaQuery(theme.breakpoints.down("md"));
 
   const [data, setData] = useState([]);
+  const [sortKey, setSortKey] = useState("departure"); // 'departure' | 'return' | 'distance' | 'duration'
   const [sortDesc, setSortDesc] = useState(false);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
@@ -61,15 +92,60 @@ const Journeys = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  const handleSort = (key) => {
+    setPage(0); // keep UX tidy when sort changes
+    // avoid nested state updaters which can require extra clicks in some React batches
+    if (key === sortKey) {
+      setSortDesc((d) => !d);
+    } else {
+      setSortKey(key);
+      setSortDesc(false);
+    }
+  };
+
+  const getSortValue = (j, key) => {
+    switch (key) {
+      case "departure":
+        return j?.departure_station_name ?? "";
+      case "return":
+        return j?.return_station_name ?? "";
+      case "distance":
+        return typeof j?.covered_distance === "number"
+          ? j.covered_distance
+          : -1;
+      case "duration":
+        return typeof j?.duration === "number" ? j.duration : -1;
+      default:
+        return "";
+    }
+  };
+
   const sorted = useMemo(() => {
     const arr = data.slice();
+
+    const collator = new Intl.Collator(undefined, {
+      sensitivity: "base",
+      numeric: true,
+    });
     arr.sort((a, b) => {
-      const A = (a?.departure_station_name || "").toString();
-      const B = (b?.departure_station_name || "").toString();
-      return sortDesc ? B.localeCompare(A) : A.localeCompare(B);
+      const A = getSortValue(a, sortKey);
+      const B = getSortValue(b, sortKey);
+      // put null/undefined/"-1" values at the bottom in ascending
+      const aMissing = A == null || A === -1 || A === "";
+      const bMissing = B == null || B === -1 || B === "";
+      if (aMissing && bMissing) return 0;
+      if (aMissing) return 1;
+      if (bMissing) return -1;
+      let cmp;
+      if (typeof A === "number" && typeof B === "number") {
+        cmp = A - B;
+      } else {
+        cmp = collator.compare(String(A), String(B));
+      }
+      return sortDesc ? -cmp : cmp;
     });
     return arr;
-  }, [data, sortDesc]);
+  }, [data, sortKey, sortDesc]);
 
   const paged = useMemo(() => {
     const start = page * rowsPerPage;
@@ -114,6 +190,31 @@ const Journeys = () => {
     <Box>
       <Header isSmDown={isSmDown} />
 
+      {/* Mobile sort controls */}
+      <Box sx={{ display: { xs: "block", md: "none" }, mb: 1 }}>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <TextField
+            select
+            size="small"
+            label="Sort by"
+            value={sortKey}
+            onChange={(e) => handleSort(e.target.value)}
+            slotProps={{ select: { native: true } }}
+          >
+            <option value="departure">Departure</option>
+            <option value="return">Return</option>
+            <option value="distance">Distance</option>
+            <option value="duration">Duration</option>
+          </TextField>
+          <IconButton
+            aria-label="Toggle sort direction"
+            onClick={() => setSortDesc((d) => !d)}
+          >
+            {sortDesc ? <FaArrowAltCircleDown /> : <FaArrowAltCircleUp />}
+          </IconButton>
+        </Stack>
+      </Box>
+
       {/* TOP pager on mobile */}
       <Box sx={{ display: { xs: "block", md: "none" }, mb: 2 }}>
         <ResponsivePagination
@@ -139,7 +240,7 @@ const Journeys = () => {
                 j._id || `${j.departure_station_id}-${j.return_station_id}-${i}`
               }
               sx={{
-                mb: i === paged.length - 1 ? 2 : 0, // Extra margin only for last card
+                mb: i === paged.length - 1 ? 2 : 0,
               }}
             >
               <CardContent>
@@ -157,7 +258,7 @@ const Journeys = () => {
                 <Row
                   icon={<RouteIcon fontSize="small" />}
                   label="Distance"
-                  value={km(j.covered_distance)}
+                  value={distanceText(j.covered_distance)}
                 />
                 <Row
                   icon={<AccessTimeIcon fontSize="small" />}
@@ -165,7 +266,6 @@ const Journeys = () => {
                   value={mins(j.duration)}
                 />
               </CardContent>
-              {/* Keep actions area for future deep-linking */}
               <CardActions sx={{ justifyContent: "flex-end" }}>
                 <Button size="small" disabled>
                   Details
@@ -189,21 +289,89 @@ const Journeys = () => {
               <TableHead>
                 <TableRow>
                   <StyledTableCell
-                    onClick={() => setSortDesc((d) => !d)}
+                    sortDirection={
+                      sortKey === "departure"
+                        ? sortDesc
+                          ? "desc"
+                          : "asc"
+                        : false
+                    }
                     sx={{ cursor: "pointer", userSelect: "none" }}
+                    onClick={() => handleSort("departure")}
                   >
                     <Stack direction="row" spacing={1} alignItems="center">
                       <span>Departure</span>
-                      {sortDesc ? (
-                        <FaArrowAltCircleDown />
-                      ) : (
-                        <FaArrowAltCircleUp />
-                      )}
+                      {sortKey === "departure" &&
+                        (sortDesc ? (
+                          <FaArrowAltCircleDown color={theme.palette.common.white} />
+                        ) : (
+                          <FaArrowAltCircleUp color={theme.palette.common.white} />
+                        ))}
                     </Stack>
                   </StyledTableCell>
-                  <StyledTableCell>Return</StyledTableCell>
-                  <StyledTableCell>Distance</StyledTableCell>
-                  <StyledTableCell>Duration</StyledTableCell>
+                  <StyledTableCell
+                    sortDirection={
+                      sortKey === "return" ? (sortDesc ? "desc" : "asc") : false
+                    }
+                    sx={{ cursor: "pointer", userSelect: "none" }}
+                    onClick={() => handleSort("return")}
+                  >
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <span>Return</span>
+                      {sortKey === "return" &&
+                        (sortDesc ? (
+                          <FaArrowAltCircleDown color={theme.palette.common.white} />
+                        ) : (
+                          <FaArrowAltCircleUp color={theme.palette.common.white} />
+                        ))}
+                    </Stack>
+                  </StyledTableCell>
+
+                  <StyledTableCell
+                    align="right"
+                    sortDirection={
+                      sortKey === "distance"
+                        ? sortDesc
+                          ? "desc"
+                          : "asc"
+                        : false
+                    }
+                    sx={{ cursor: "pointer", userSelect: "none" }}
+                    onClick={() => handleSort("distance")}
+                  >
+                    <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end">
+                      <span>Distance</span>
+                      {sortKey === "distance" &&
+                        (sortDesc ? (
+                          <FaArrowAltCircleDown color={theme.palette.common.white} />
+                        ) : (
+                          <FaArrowAltCircleUp color={theme.palette.common.white} />
+                        ))}
+                    </Stack>
+                  </StyledTableCell>
+
+                  <StyledTableCell
+                    align="right"
+                    sortDirection={
+                      sortKey === "duration"
+                        ? sortDesc
+                          ? "desc"
+                          : "asc"
+                        : false
+                    }
+                    sx={{ cursor: "pointer", userSelect: "none" }}
+                    onClick={() => handleSort("duration")}
+                  >
+                    <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end">
+                      <span>Duration</span>
+                      {sortKey === "duration" &&
+                        (sortDesc ? (
+                          <FaArrowAltCircleDown color={theme.palette.common.white} />
+                        ) : (
+                          <FaArrowAltCircleUp color={theme.palette.common.white} />
+                        ))}
+                    </Stack>
+                  </StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -214,15 +382,18 @@ const Journeys = () => {
                       j._id ||
                       `${j.departure_station_id}-${j.return_station_id}-${i}`
                     }
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell>{j.departure_station_name}</TableCell>
                     <TableCell>{j.return_station_name}</TableCell>
-                    <TableCell>{km(j.covered_distance)}</TableCell>
-                    <TableCell>{mins(j.duration)}</TableCell>
+                    <TableCell align="right">
+                      {distanceText(j.covered_distance)}
+                    </TableCell>{" "}
+                    {/* ← align */}
+                    <TableCell align="right">{mins(j.duration)}</TableCell>{" "}
+                    {/* ← align */}
                   </TableRow>
                 ))}
-              </TableBody>
+              </TableBody>{" "}
             </Table>
           </TableContainer>
         </Paper>
@@ -257,7 +428,7 @@ function Header({ isSmDown }) {
       <Stack direction="row" spacing={1} alignItems="center">
         <DirectionsBikeIcon color="primary" />
         <Typography
-          variant={isSmDown ? "h6" : "h5"} // smaller heading on mobile
+          variant={isSmDown ? "h6" : "h5"}
           color="primary"
           sx={{ fontWeight: 600 }}
         >

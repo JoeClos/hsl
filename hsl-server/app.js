@@ -51,16 +51,19 @@ app.get("/", (req, res) => {
 app.get("/journeys", async (req, res) => {
   res.header({ "Cache-control": "public, max-age=300" });
   try {
-    // Pagination
-    const page = req.query.page || 1;
-    const limit = req.query.limit || 5000;
-    const skip = (page - 1) * limit;
+  // Pagination (ensure numeric)
+  const page = parseInt(req.query.page, 10) || 1;
+  const limit = Math.min(parseInt(req.query.limit, 10) || 5000, 5000);
+  const skip = (page - 1) * limit;
     const display = req.query.display || "list";
     const departureStationId = req.query.departureStationId || undefined;
     const returnStationId = req.query.returnStationId || undefined;
+    // Exclude very short/short-distance journeys and ensure station ids exist
     const findParams = {
-      duration: { $gt: 10 },
-      covered_distance: { $gt: 10 },
+      duration: { $gte: 10 }, // exclude durations < 10s
+      covered_distance: { $gte: 10 }, // exclude distances < 10m
+      departure_station_id: { $nin: [null, undefined] },
+      return_station_id: { $nin: [null, undefined] },
     };
     if (departureStationId) {
       findParams.departure_station_id = departureStationId;
@@ -70,16 +73,16 @@ app.get("/journeys", async (req, res) => {
     }
 
     if (display === "count") {
-      const count = await Journeys.countDocuments(findParams); 
-      res.json(count);
-      return;
+      const count = await Journeys.countDocuments(findParams);
+      return res.json(count);
     }
 
     const journeys = await Journeys.find(findParams).skip(skip).limit(limit);
 
-    res.json(await journeys);
+    return res.json(journeys);
   } catch (e) {
     console.error(e);
+    return res.status(500).json({ error: e.message });
   }
 });
 
@@ -87,23 +90,24 @@ app.get("/journeys", async (req, res) => {
 app.get("/stations", async (req, res) => {
   try {
     const stations = await Stations.find({
-      fid: { $ne: null || undefined },
-      id: { $ne: null || undefined },
-      nimi: { $ne: null || undefined },
-      namn: { $ne: null || undefined },
-      name: { $ne: null || undefined },
-      osoite: { $ne: null || undefined },
-      address: { $ne: null || undefined },
-      kaupunki: { $ne: null || undefined },
-      stad: { $ne: null || undefined },
-      operaattor: { $ne: null || undefined },
-      kapasiteet: { $ne: null || undefined },
-      x: { $ne: null || undefined },
-      y: { $ne: null || undefined },
+      fid: { $nin: [null, undefined] },
+      id: { $nin: [null, undefined] },
+      nimi: { $nin: [null, undefined] },
+      namn: { $nin: [null, undefined] },
+      name: { $nin: [null, undefined] },
+      osoite: { $nin: [null, undefined] },
+      address: { $nin: [null, undefined] },
+      kaupunki: { $nin: [null, undefined] },
+      stad: { $nin: [null, undefined] },
+      operaattor: { $nin: [null, undefined] },
+      kapasiteet: { $nin: [null, undefined] },
+      x: { $nin: [null, undefined] },
+      y: { $nin: [null, undefined] },
     });
-    res.json(stations);
+    return res.json(stations);
   } catch (e) {
     console.error(e);
+    return res.status(500).json({ error: e.message });
   }
 });
 
