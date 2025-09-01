@@ -303,9 +303,13 @@ const Journeys = () => {
                       <span>Departure</span>
                       {sortKey === "departure" &&
                         (sortDesc ? (
-                          <FaArrowAltCircleDown color={theme.palette.common.white} />
+                          <FaArrowAltCircleDown
+                            color={theme.palette.common.white}
+                          />
                         ) : (
-                          <FaArrowAltCircleUp color={theme.palette.common.white} />
+                          <FaArrowAltCircleUp
+                            color={theme.palette.common.white}
+                          />
                         ))}
                     </Stack>
                   </StyledTableCell>
@@ -320,9 +324,13 @@ const Journeys = () => {
                       <span>Return</span>
                       {sortKey === "return" &&
                         (sortDesc ? (
-                          <FaArrowAltCircleDown color={theme.palette.common.white} />
+                          <FaArrowAltCircleDown
+                            color={theme.palette.common.white}
+                          />
                         ) : (
-                          <FaArrowAltCircleUp color={theme.palette.common.white} />
+                          <FaArrowAltCircleUp
+                            color={theme.palette.common.white}
+                          />
                         ))}
                     </Stack>
                   </StyledTableCell>
@@ -339,13 +347,22 @@ const Journeys = () => {
                     sx={{ cursor: "pointer", userSelect: "none" }}
                     onClick={() => handleSort("distance")}
                   >
-                    <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end">
+                    <Stack
+                      direction="row"
+                      spacing={1}
+                      alignItems="center"
+                      justifyContent="flex-end"
+                    >
                       <span>Distance</span>
                       {sortKey === "distance" &&
                         (sortDesc ? (
-                          <FaArrowAltCircleDown color={theme.palette.common.white} />
+                          <FaArrowAltCircleDown
+                            color={theme.palette.common.white}
+                          />
                         ) : (
-                          <FaArrowAltCircleUp color={theme.palette.common.white} />
+                          <FaArrowAltCircleUp
+                            color={theme.palette.common.white}
+                          />
                         ))}
                     </Stack>
                   </StyledTableCell>
@@ -362,13 +379,22 @@ const Journeys = () => {
                     sx={{ cursor: "pointer", userSelect: "none" }}
                     onClick={() => handleSort("duration")}
                   >
-                    <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end">
+                    <Stack
+                      direction="row"
+                      spacing={1}
+                      alignItems="center"
+                      justifyContent="flex-end"
+                    >
                       <span>Duration</span>
                       {sortKey === "duration" &&
                         (sortDesc ? (
-                          <FaArrowAltCircleDown color={theme.palette.common.white} />
+                          <FaArrowAltCircleDown
+                            color={theme.palette.common.white}
+                          />
                         ) : (
-                          <FaArrowAltCircleUp color={theme.palette.common.white} />
+                          <FaArrowAltCircleUp
+                            color={theme.palette.common.white}
+                          />
                         ))}
                     </Stack>
                   </StyledTableCell>
@@ -387,13 +413,11 @@ const Journeys = () => {
                     <TableCell>{j.return_station_name}</TableCell>
                     <TableCell align="right">
                       {distanceText(j.covered_distance)}
-                    </TableCell>{" "}
-                    {/* ← align */}
-                    <TableCell align="right">{mins(j.duration)}</TableCell>{" "}
-                    {/* ← align */}
+                    </TableCell>
+                    <TableCell align="right">{mins(j.duration)}</TableCell>
                   </TableRow>
                 ))}
-              </TableBody>{" "}
+              </TableBody>
             </Table>
           </TableContainer>
         </Paper>
