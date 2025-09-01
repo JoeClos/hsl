@@ -29,6 +29,7 @@ import LocationSearchingSharpIcon from "@mui/icons-material/LocationSearchingSha
 import ReadMoreOutlinedIcon from "@mui/icons-material/ReadMoreOutlined";
 import { FaArrowAltCircleUp, FaArrowAltCircleDown } from "react-icons/fa";
 import ResponsivePagination from "../components/ResponsivePagination";
+import Search from "../components/Search";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -49,6 +50,8 @@ const Stations = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
 
+  const [query, setQuery] = useState("");
+
   // Coordinates formatting
   const formatCoordinates = (val) =>
     typeof val === "number"
@@ -65,27 +68,51 @@ const Stations = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  const norm = (s) =>
+    (s || "")
+      .toString()
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "")
+      .toLowerCase();
+
+  // Filter first, then sort
+  const filtered = useMemo(() => {
+    if (!query) return stations;
+    const q = norm(query);
+    return stations.filter((s) => {
+      const name = norm(s.nimi || s.name);
+      const addr = norm(s.osoite || s.address);
+      const city = norm(s.kaupunki || s.stad);
+      return name.includes(q) || addr.includes(q) || city.includes(q);
+    });
+  }, [stations, query]);
+
   // (search reserved for later global search; currently no filtering)
   const sorted = useMemo(() => {
-    const arr = stations.slice();
+    const arr = filtered.slice();
     arr.sort((a, b) => {
       const A = (a?.nimi || a?.name || "").toString();
       const B = (b?.nimi || b?.name || "").toString();
       return sortDesc ? B.localeCompare(A) : A.localeCompare(B);
     });
     return arr;
-  }, [stations, sortDesc]);
+  }, [filtered, sortDesc]);
 
   const paged = useMemo(() => {
     const start = page * rowsPerPage;
     return sorted.slice(start, start + rowsPerPage);
   }, [sorted, page, rowsPerPage]);
 
+  // When query changes, go back to first page
+  useEffect(() => {
+    setPage(0);
+  }, [query]);
+
   // loading UI
   if (loading) {
     return (
       <Stack spacing={2}>
-        <Header isSmDown={isSmDown} />
+        <Header isSmDown={isSmDown} onSearch={setQuery} />
         {isSmDown ? (
           [...Array(6)].map((_, i) => (
             <Paper key={i} sx={{ p: 2 }}>
@@ -109,7 +136,7 @@ const Stations = () => {
   if (err) {
     return (
       <Stack spacing={2}>
-        <Header isSmDown={isSmDown} />
+        <Header isSmDown={isSmDown} onSearch={setQuery} />
         <Paper sx={{ p: 2, color: "error.main" }}>{err}</Paper>
       </Stack>
     );
@@ -117,12 +144,12 @@ const Stations = () => {
 
   return (
     <Box>
-      <Header isSmDown={isSmDown} />
+      <Header isSmDown={isSmDown} onSearch={setQuery}/>
 
       {/* TOP pager on mobile */}
       <Box sx={{ display: { xs: "block", md: "none" }, mb: 2 }}>
         <ResponsivePagination
-          count={sorted.length}
+          count={filtered.length}
           page={page}
           rowsPerPage={rowsPerPage}
           onPageChange={(_, p) => setPage(p)}
@@ -280,7 +307,7 @@ const Stations = () => {
   );
 };
 
-function Header({ isSmDown }) {
+function Header({ isSmDown, onSearch }) {
   return (
     <Stack
       direction={{ xs: "column", md: "row" }}
@@ -300,6 +327,10 @@ function Header({ isSmDown }) {
         </Typography>
       </Stack>
       {/* Reserved for future global search/filter controls */}
+      {/* Global search */}
+      <Box sx={{ width: { xs: "100%", md: "auto" } }}>
+        <Search onSearch={onSearch} />
+      </Box>
     </Stack>
   );
 }
