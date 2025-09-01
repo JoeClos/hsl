@@ -116,7 +116,7 @@ app.post("/addStation", async (req, res) => {
   // new station
   const newStation = new Stations({
     fid: req.body.fid,
-    id: req.body.fid,
+    id: req.body.id,
     nimi: req.body.nimi,
     namn: req.body.namn,
     name: req.body.name,
