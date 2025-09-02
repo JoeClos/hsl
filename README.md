@@ -1,97 +1,182 @@
 # Helsinki City Bikes
-A web page showing city bike trips in the Helsinki Capital area.
-</br></br>
-My work is based on Solita's [Dev Academy pre-assignment](https://github.com/solita/dev-academy-2023-exercise).
-Browse the site: [HCB - Helsinki City Bikes](https://hsl-ui.netlify.app)
 
-## 📸 Application Preview
+A friendly, responsive web app for exploring city bike **stations** and **journeys** in the Helsinki Capital area.
+
+> This started as Solita’s [Dev Academy pre-assignment](https://github.com/solita/dev-academy-2023-exercise) and grew into a hobby project.    
+> Live demo: **[HCB – Helsinki City Bikes](https://hsl-ui.netlify.app)**
+
+## 📸 Preview
 
 | Desktop View | Mobile View |
 | :---: | :---: |
 | ![Desktop](https://github.com/user-attachments/assets/3d75823a-77a5-4215-9b65-781d198818b0) | ![Mobile](https://github.com/user-attachments/assets/4e1eb096-8876-4174-8b74-5ac81776f74d) |
 
-## Main features
-### 1. <ins>Front-end</ins>
+---
 
-   * ### Home page
-      - Displays stations markers clustered on the map. Clusters show the numbers of markers contained.
-   - ### Journeys
-      - Lists journeys in a paginated table, with a default of 10 journeys/page. Other options are: 25, 50, 100 journeys/page out of total: 5000.
-      - Each journey shows departure and return stations, covered distance in kilometers and duration in minutes.
-      - Searching is implemented and it is filtering and displaying journeys by departure station name.
-      - Journeys can be ordered alphabetically by departure station name.
-   - ### Stations  
-      - Lists stations in a paginated table, with a default of 10 stations/page. Other options are: 25, 50, 100 stations/page.
-      - Each stations shows station name, address, city and operator (where applicable), capacity and coordinates.
-      - Seaching is implemented, filtering and displaying station by station name.
-      - Stations can be ordered alphabetically by station name.
-   - ### Single station view
-      - Displays station
-         - name, 
-         - address,
-         - total number of journeys starting from the station and ending at the station.
-      - Station is located on the map.
-   - ### Add station
-      - Additionally stations can be added and saved to the database.
-      
+## Why this refactor?
 
-### 2. <ins>Back-end</ins>
-  - ### Database
-      -  MongoDb is used for this project to import big ammount of data from CSV files. 
-          - For journeys:
-            - https://dev.hsl.fi/citybikes/od-trips-2021/2021-05.csv 
-            - https://dev.hsl.fi/citybikes/od-trips-2021/2021-06.csv
-            - https://dev.hsl.fi/citybikes/od-trips-2021/2021-07.csv
-          - For stations:
-            - https://opendata.arcgis.com/datasets/726277c507ef4914b0aec3cbcfcbfafc_0.csv 
-      -  Mongoose on top of it, it's used to conveniently create and manage data in MongoDB.
-  * ### Api - data fetching
-    - I limited the import of data to 5000 for journeys and pagination is implemented.
-    - Journeys that lasted for less than ten seconds are not imported.
-    - Journeys in which the distance covered is less than 10 meters are not imported.
-    - Undefined or null stations are not imported.
-       
-## Technologies
- * UI
-   - [React ](https://react.dev/)
-   - [MUI- Material UI](https://mui.com/material-ui/getting-started/overview/)
-   - [React Leaflet](https://react-leaflet.js.org/)
-   - [React Leaflet Cluster](https://akursat.gitbook.io/marker-cluster/)
- * Back-End
-   - [Node.js](https://nodejs.org/en)
-   - [Express](https://expressjs.com/)
-   - [MongoDB](https://www.mongodb.com/)
-   - [Mongoose](https://mongoosejs.com/docs/index.html)
+I rebuilt the app to make it **faster**, **easier to work on**, and **better on mobile**.
 
-## Development environment
-- [Node.js 18.14.2](https://nodejs.org/en) is installed.
-### Environment setup
-1. Install Node.js
-2. Clone this repository or download ZIP. 
-3. Set up database:
-    - Sign in MongoDB atlas and connect via Compass. Steps to follow [here](https://www.mongodb.com/docs/atlas/compass-connection/).
+### The big changes
+- **From CRA to Vite (React + Vite)**
+  - Vite starts the dev server almost instantly and produces smaller builds.
+  - New scripts:
+    - `npm run dev` – start the app in development
+    - `npm run build` – create a production build
+    - `npm run preview` – preview the production build locally
 
-### Commands
-- ### UI
-  - ### `npm install`
-    - Install the dependencies to the local `node_modules` folder and will install all modules listed as dependencies in `package.json`.
-  - ### `npm start`
-    - Runs UI locally and opens it in the default browser on: http://localhost:3000.
-  - ### `npm run build`
-    - Builds development version of the UI to the `./build` folder.
-- ### Back-end
-  - ### `npm install`
-    - Install the dependencies to the local `node_modules` folder and will install all modules listed as dependencies in `package.json`.
-  - ### `nodemon app.js`
-    -  Runs back-end locally and opens it on: http://localhost:8000. Nodemon will monitor for any changes in the source and automatically restart the server.
-    -  For visualising the journeys, navigate to http://localhost:8000/journeys.
-    -  For stations, navigate to http://localhost:8000/stations/{id}.
-    -  For counting journeys starting from the station: </br> Ex: http://localhost:8000/journeys?display=count&departureStationId=departure_station_id.
-    ![Screenshot 2023-04-28 142751](https://user-images.githubusercontent.com/89244648/235136614-78dbb43f-53a9-4923-a8af-c8d76b690dfd.png)
+- **Mobile-first, responsive UI**
+  - Works great on phones: bottom navigation, modal details, readable lists.
+  - Desktop gets tables, side-by-side layouts, and more screen real estate.
+  - The map renders reliably on all screen sizes.
 
-    -  For counting journeys ending at the station: </br> Ex: http://localhost:8000/journeys?display=count&returnStationId=return_station_id.
-    ![Screenshot 2023-04-28 143226](https://user-images.githubusercontent.com/89244648/235136962-58b9d332-572c-46f9-b8dc-b063fa8f672f.png)
+- **Clear project structure**
+  - Reusable components live in `src/components/`
+  - Screens live in `src/pages/`
+  - API helpers live in `src/service/`
+  - Easier to find things, easier to extend.
 
-    
-    
+- **Quality-of-life improvements**
+  - Consistent toasts for success/error messages.
+  - Modernized MUI usage (e.g., Grid v2, updated TextField API).
+  - Sorting, searching, pagination across lists.
 
+---
+
+
+## What you can do in the app
+
+- **Home:** Explore stations on an interactive map (with clustering).
+- **Journeys:** Browse trips with sorting (by Departure, Return, Distance, Duration) and pagination.
+- **Stations:** Search and browse stations with pagination and sorting.
+- **Single Station:** See details, a map pin, and totals of journeys from/to that station.
+- **Add Station:** Submit a new station with real-time validation and clear feedback.
+
+---
+
+
+## Tech Stack
+
+**UI**
+- React 18
+- Vite
+- Material UI (MUI)
+- React Leaflet (+ Marker Cluster)
+
+**API / DB**
+- Node.js + Express
+- MongoDB + Mongoose
+
+---
+
+## Data Sources
+
+**Journeys**
+- May–July 2021 trips:
+  - https://dev.hsl.fi/citybikes/od-trips-2021/2021-05.csv  
+  - https://dev.hsl.fi/citybikes/od-trips-2021/2021-06.csv  
+  - https://dev.hsl.fi/citybikes/od-trips-2021/2021-07.csv  
+
+**Stations**
+- https://opendata.arcgis.com/datasets/726277c507ef4914b0aec3cbcfcbfafc_0.csv
+
+**Import constraints**
+- Only journeys with `duration > 10s` and `covered_distance > 10m`
+- Skip journeys with undefined/null station ids
+- UI fetches up to `5000` journeys (client-side pagination)
+
+---
+
+
+- **State management**: React hooks (`useState`, `useEffect`, `useMemo`) — no external state lib.
+- **API layer**: Single axios instance; pages call `service/api` helpers.
+- **UI patterns**: Tables on desktop; card lists on mobile; consistent spacing/typography via MUI.
+
+---
+
+## Local Development
+
+> Requires **Node 18+** (Vite 5 needs Node ≥ 18).
+
+### 1) Clone + install
+
+```bash
+# UI
+cd hsl/hsl-client
+npm install
+
+# Server
+cd hsl/hsl-server
+npm install
+````
+
+### 2) Run
+
+```bash
+# UI (Vite)
+cd hsl-client
+npm run dev                 # http://localhost:5173
+
+# Server (Express)
+cd hsl-server
+nodemon app.js          # http://localhost:8000
+```
+
+## API Quick Reference
+
+### GET `/journeys`
+**Query params**
+- `limit` — max items to return (default: 5000)
+- `page` — page index starting at 1 (used with `limit`)
+- `display` — `list` (default) or `count`
+- `departureStationId` — filter by departure station id
+- `returnStationId` — filter by return station id
+
+**Server-side filters**
+- `duration > 10` seconds  
+- `covered_distance > 10` meters
+
+**Examples**
+```http
+GET /journeys?limit=5000&page=1
+GET /journeys?display=count&departureStationId=501
+GET /journeys?display=count&returnStationId=501
+```
+
+### GET `/stations`
+```http
+GET /stations
+```
+
+### GET `/stations/:id`
+```http
+GET /stations/501
+```
+
+### POST `/addStation`
+Create a new station.
+
+```json
+{
+  "fid": 123,
+  "id": 501,
+  "nimi": "Kamppi (fi)",
+  "namn": "Kampen (sv)",
+  "name": "Kamppi (en)",
+  "osoite": "Urho Kekkosen katu 1",
+  "address": "Urho Kekkosen St 1",
+  "kaupunki": "Helsinki",
+  "stad": "Helsingfors",
+  "operaattor": "CityBike Finland",
+  "kapasiteet": 28,
+  "x": 24.931,
+  "y": 60.170
+}
+```
+---
+
+
+## Final notes
+
+- This project is a learning playground—it began as an assignment and evolved into a hobby refactor focused on speed (Vite), structure (clear folders), and accessibility/responsiveness.
+- There’s room for more (date filters, server-side paging, maps for journeys, etc.). PRs and ideas welcome!
